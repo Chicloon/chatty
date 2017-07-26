@@ -1,5 +1,8 @@
 import { observable, action } from "mobx";
 
-export default class AppState {
+ class AppState {
   @observable test = 'hello from store';
 }
+
+export default new AppState();
+
