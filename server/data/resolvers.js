@@ -2,11 +2,14 @@ import GraphQLDate from 'graphql-date';
 
 import { Group, Message, User } from './connectors';
 
-export const Resolvers = {
+const Resolvers = {
   Date: GraphQLDate,
   Query: {
     group(_, args) {
       return Group.find({ where: args });
+    },
+    users() {
+      return User.findAll({});
     },
     messages(_, args) {
       return Message.findAll({
@@ -20,6 +23,7 @@ export const Resolvers = {
   },
   Group: {
     users(group) {
+      console.log(group);
       return group.getUsers();
     },
     messages(group) {
@@ -30,8 +34,7 @@ export const Resolvers = {
     },
   },
   Message: {
-    to(message) {
-      console.log(message);
+    to(message) {        
       return message.getGroup();
     },
     from(message) {

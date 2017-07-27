@@ -4,8 +4,8 @@ import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
 
-import { Resolvers } from './data/resolvers';
-import { Schema } from './data/schema';
+import resolvers from './data/resolvers';
+import Schema from './data/schema';
 import { Mocks } from './data/mocks';
 
 
@@ -15,7 +15,7 @@ const app = express();
 
 const executableSchema = makeExecutableSchema({
   typeDefs: Schema,
-  resolvers: Resolvers,
+  resolvers,
 });
 
 // addMockFunctionsToSchema({

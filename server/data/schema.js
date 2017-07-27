@@ -1,4 +1,4 @@
-export const Schema = [`
+export default `
   # custom scalars
   scalar Date
 
@@ -32,19 +32,21 @@ export const Schema = [`
 
   # Запросы для описанных типов
   type Query {
-    # Возвращает пользователя по id или email
+    # пользователя по id или email
     user(email: String, id: Int): User
 
-    # Возвращает сообщения пользователя по userID 
+    # всех пользователей
+    users: [User]
+
+    # сообщения пользователя по userID 
     # или сообщения в группе по ID группы
     messages(groupId: Int, userId: Int): [Message]
 
-    # Возвращает группы по Id
+    # группа по Id
     group(id: Int!): Group
   }
 
   schema {
     query: Query
   }
-`];
-export default Schema;
+`;
