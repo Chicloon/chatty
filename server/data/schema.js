@@ -15,6 +15,7 @@ export const Schema = [`
     id: Int!
     email: String!
     username: String!
+    fullname: String
     messages: [Message]
     groups: [Group] #группы к которым отностся пользователь
     friends: [User]
