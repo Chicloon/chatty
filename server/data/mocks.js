@@ -4,8 +4,8 @@ import faker from 'faker';
 export const Mocks = {
   Date: () => new Date(),
   Int: () => parseInt(Math.random() * 100, 10),
-  ID: () => faker.random.uuid(),
-  String: () => new Date(),
+  // ID: () => faker.random.uuid(),
+  // String: () => new Date(),
   Query: () => ({
     user: (root, args) => ({
       email: args.email,

@@ -4,7 +4,7 @@ export const Schema = [`
 
   #групповой чат
   type Group {
-    id: ID! #Id группы
+    id: Int! #Id группы
     name: String #имя группы
     users: [User]! # пользователи группы
     messages: [Message] # сообщения в группе
@@ -12,7 +12,7 @@ export const Schema = [`
 
   # Пользователь
   type User {
-    id: ID!
+    id: Int!
     email: String!
     username: String!
     messages: [Message]
@@ -22,7 +22,7 @@ export const Schema = [`
   
   #Сообщения пользователя в группе
   type Message {
-    id: ID
+    id: Int
     to: Group! # Группа в котороую было отправленно сообщение
     from: User! # От кого сообщение
     text: String 
@@ -32,14 +32,14 @@ export const Schema = [`
   # Запросы для описанных типов
   type Query {
     # Возвращает пользователя по id или email
-    user(email: String, id: ID): User
+    user(email: String, id: Int): User
 
     # Возвращает сообщения пользователя по userID 
     # или сообщения в группе по ID группы
-    messages(groupId: ID, userId: ID): [Message]
+    messages(groupId: Int, userId: Int): [Message]
 
     # Возвращает группы по Id
-    group(id: ID!): Group
+    group(id: Int!): Group
   }
 
   schema {
