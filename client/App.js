@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { observable } from 'mobx';
 import { Provider, observer } from 'mobx-react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import Layout from './components/Layout';
 
-import stores from './stores';
-
+import './styles/main.css';
 // Antd for ui components
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
@@ -14,6 +12,17 @@ import ruRU from 'antd/lib/locale-provider/ru_RU';
 // Apollo for gql
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
+
+//Stores
+import stores from './stores';
+
+//Components
+import * as Client from './components';
+import NotFound from './NotFound';
+import Group from './components/Group/Group';
+
+import Layout from './Layout';
+
 
 const networkInterface = createNetworkInterface({
 	uri: '/graphql',
@@ -28,19 +37,25 @@ const client = new ApolloClient({
 });
 
 
-class App extends Component {	
+class App extends Component {
 	render() {
 		// console.log(this.props);		
 		return (
-			<LocaleProvider locale={ruRU}>
-				<ApolloProvider client={client}>
+			<ApolloProvider client={client}>
+				<Router>
 					<Provider {...stores}>
-						<Router>							
-									<Layout />
-						</Router>
+						<LocaleProvider locale={ruRU}>
+							<Layout >
+								<Switch>
+								 	<Redirect from='/' exact to='/groups' /> 
+									<Route path="/groups" component={Client.Group } />
+									<Route paht="*" component={NotFound} />
+								</Switch>
+							</Layout>
+						</LocaleProvider>
 					</Provider>
-				</ ApolloProvider>
-			</LocaleProvider>
+				</Router>
+			</ ApolloProvider>
 		);
 	}
 
