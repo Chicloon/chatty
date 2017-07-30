@@ -4,6 +4,13 @@ import { Group, Message, User } from './connectors';
 
 const Resolvers = {
   Date: GraphQLDate,
+  Mutation: {
+    createMessage(_, {text, userId, groupId}) {
+      return Message.create({
+        userId, text, groupId
+      });
+    }
+  },
   Query: {
     group(_, args) {
       return Group.find({ where: args });

@@ -25,7 +25,7 @@ class MainMenu extends Component {
       >      
         {groups.map(el =>
           <Item key={el.id}>
-            <Icon type="user" />
+            <Icon type="plus-square-o" />
             <span> {el.name} </span>
             <Link to={`/chat/${el.id}`} />
           </Item>

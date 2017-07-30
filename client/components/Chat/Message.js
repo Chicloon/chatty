@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
-
-// import c from '../';
-
-
 class Message extends Component {
     constructor(props) {
         super(props);
@@ -12,10 +8,11 @@ class Message extends Component {
     }
 
     render() {
-        const store = this.store;
+        const { user, message, createdAt } = this.props;
+
         return (
-            <p>              
-                {this.props.user}: <span> {this.props.message} </span>              
+            <p>
+                <b>{user} </b> [<i>{createdAt}</i>]: <span> {message} </span>
             </p>
         );
     }

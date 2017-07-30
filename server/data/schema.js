@@ -49,7 +49,13 @@ export default `
     group(id: Int!): Group
   }
 
+  type Mutation {
+    # создать сообщение
+    createMessage (text: String!, userId: Int!, groupId: Int!): Message
+  }
+
   schema {
     query: Query
+    mutation: Mutation
   }
 `;
