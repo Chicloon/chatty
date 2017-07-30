@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Route, Link } from "react-router-dom";
+
+import Message from './Message';
 
 // import c from '../';
 
-@inject(["appState"])
-class Group extends Component {
+
+class Chat extends Component {
     constructor(props) {
         super(props);
         this.store = this.props.appState;
@@ -13,15 +14,14 @@ class Group extends Component {
 
     render() {
         const store = this.store;
+        console.log('---Chat props', this.props);
         return (
             <div>
-                <div> {store.test}  </div>
-                Main Layout
+              {this.props.match.params.chat}              
+              <Message user='User' message='message' />
             </div>
         );
     }
 }
 
-export default Group;
-
-                // <p> Вы находитесь на странице {this.props.location.pathname} </p>
+export default Chat;

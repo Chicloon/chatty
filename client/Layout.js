@@ -7,15 +7,16 @@ import DevTools from "mobx-react-devtools";
 import { Layout } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 
-import MainMenu from './MainMenu';
+import MainMenu from './components/MainMenu/MainMenu.js';
 
 export default class App extends Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
-         <Header style={{ background: '#fff', padding: 0 }} >
-            <h1 style={{textAlign: 'center'}}> Добро пожаловать в чат </h1>
-          </Header>
+        <Header style={{ background: '#fff', padding: 0 }} >
+          <h1 style={{ textAlign: 'center' }}> Добро пожаловать в чат  <Link to='/'> Список всех групп </Link >  </h1>
+         
+        </Header>
         <Layout>
           <Sider
             className="sider"
@@ -26,8 +27,8 @@ export default class App extends Component {
           >
             <MainMenu />
           </Sider>
-          <Content style={{ margin: '12px  12px' }}>            
-              {this.props.children}            
+          <Content style={{ margin: '12px  12px' }}>
+            {this.props.children}
           </Content>
         </Layout>
       </Layout>

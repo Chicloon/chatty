@@ -25,7 +25,7 @@ import Layout from './Layout';
 
 
 const networkInterface = createNetworkInterface({
-	uri: '/graphql',
+	uri: '/graphql', // Ссылка на проксю из webpack.config.js
 	opts: {
 		credentials: 'same-origin',
 	},
@@ -47,9 +47,11 @@ class App extends Component {
 						<LocaleProvider locale={ruRU}>
 							<Layout >
 								<Switch>
-								 	<Redirect from='/' exact to='/groups' /> 
-									<Route path="/groups" component={Client.Group } />
-									<Route paht="*" component={NotFound} />
+									<Redirect from='/' exact to='/groups' /> 
+									<Route path="/groups" exact component={Client.Group} />
+									{/* <Route path="/chat" component={Client.Chat} /> */}
+									<Route path="/chat/:chat" component={Client.Chat} />
+									<Route path="*" component={NotFound} />
 								</Switch>
 							</Layout>
 						</LocaleProvider>

@@ -8,6 +8,9 @@ const Resolvers = {
     group(_, args) {
       return Group.find({ where: args });
     },
+    groups() {
+      return Group.findAll({});
+    },
     users() {
       return User.findAll({});
     },

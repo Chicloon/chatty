@@ -38,6 +38,9 @@ export default `
     # всех пользователей
     users: [User]
 
+    # всех групп
+    groups: [Group]
+
     # сообщения пользователя по userID 
     # или сообщения в группе по ID группы
     messages(groupId: Int, userId: Int): [Message]
