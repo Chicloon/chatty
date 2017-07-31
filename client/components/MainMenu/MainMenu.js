@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import { Menu, Icon } from 'antd';
 const { Item } = Menu;
 
-import query from '../src/graphql/query/groups';
+import query from '../src/graphql/groups.query';
 
 class MainMenu extends Component {
   constructor(props) {
