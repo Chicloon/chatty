@@ -49,7 +49,8 @@ class Chat extends Component {
 
             },
         })
-            .then(this.props.data.refetch());
+            // .then(this.props.data.refetch())
+            .catch((error)=> console.log('Smth happened', error));
         
         console.log('msg:', message);
     }
