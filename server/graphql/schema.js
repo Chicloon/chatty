@@ -5,6 +5,20 @@ export default `
     message: String!
   }
 
+  type Auth {
+    token: String!
+  }
+
+  type User {
+    _id: ID!
+    username: String
+    email: String!
+    firstname: String
+    lastname: String
+    avatar: String
+    createdAt: Date
+    updatedAt: Date
+  }
 
   type Tweet {
     _id: ID
@@ -22,6 +36,8 @@ export default `
     createTweet(text: String!): Tweet
     updateTweet(_id: ID, text: String, email: String): Tweet
     deleteTweet(_id: ID): Status
+    signup(email: String!, fullName: String!, password: String!, avatar: String, username: String): Auth
+    login(email: String!, password: String!): Auth
   }
 
   schema {

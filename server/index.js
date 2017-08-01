@@ -1,7 +1,4 @@
 import express from 'express';
-import { graphiqlExpress, graphqlExpress } from 'graphql-server-express';
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
-import bodyParser from 'body-parser';
 import { createServer } from 'http';
 
 // import resolvers from './graphql/resolvers';
@@ -10,20 +7,13 @@ import { createServer } from 'http';
 
 import './config/db';
 import constants from './config/constants';
-import typeDefs from './graphql/schema';
-import resolvers from './graphql/resolvers';
+import middlewares from './config/middlewares';
+
 import mocks from './mocks';
 
-// Настрой graphQL
-// const GRAPHQL_PORT = 8080;
-
 const app = express();
-app.use(bodyParser.json());
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+middlewares(app);
 
 // const executableSchema = makeExecutableSchema({
 //   typeDefs: Schema,
@@ -44,21 +34,6 @@ const schema = makeExecutableSchema({
 // app.use('/graphiql', graphiqlExpress({
 //   endpointURL: '/graphql',
 // }));
-
-app.use(
-  '/graphiql',
-  graphiqlExpress({
-    endpointURL: constants.GRAPHQL_PATH,
-  }),
-);
-
-app.use(
-  constants.GRAPHQL_PATH,
-  graphqlExpress({
-    schema,
-  }),
-);
-
 
 const graphQLServer = createServer(app);
 
