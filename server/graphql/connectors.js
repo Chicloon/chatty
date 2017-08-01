@@ -43,44 +43,44 @@ GroupModel.belongsToMany(UserModel, { through: 'GroupUser'});
 
 // Создаем фейковых пользователей
 
-const GROUPS = 4;
-const USERS_PER_GROUP = 5;
-const MESSAGES_PER_USER = 5;
-faker.seed(123); // get consistent data every time we reload app
-// you don't need to stare at this code too hard
-// just trust that it fakes a bunch of groups, users, and messages
-db.sync({ force: true }).then(() => _.times(GROUPS, () => GroupModel.create({
-  name: faker.lorem.words(3),
-}).then(group => _.times(USERS_PER_GROUP, () => {
-  const password = faker.internet.password();
-  return group.createUser({
-    email: faker.internet.email(),
-    username: faker.internet.userName(),
-    password,
-  }).then((user) => {
-    console.log(
-      '{email, username, password}',
-      `{${user.email}, ${user.username}, ${password}}`
-    );
-    _.times(MESSAGES_PER_USER, () => MessageModel.create({
-      userId: user.id,
-      groupId: group.id,
-      text: faker.lorem.sentences(3),
-    }));
-    return user;
-  });
-})).then((userPromises) => {
-  // make users friends with all users in the group
-  Promise.all(userPromises).then((users) => {
-    _.each(users, (current, i) => {
-      _.each(users, (user, j) => {
-        if (i !== j) {
-          current.addFriend(user);
-        }
-      });
-    });
-  });
-})));
+// const GROUPS = 4;
+// const USERS_PER_GROUP = 5;
+// const MESSAGES_PER_USER = 5;
+// faker.seed(123); // get consistent data every time we reload app
+// // you don't need to stare at this code too hard
+// // just trust that it fakes a bunch of groups, users, and messages
+// db.sync({ force: true }).then(() => _.times(GROUPS, () => GroupModel.create({
+//   name: faker.lorem.words(3),
+// }).then(group => _.times(USERS_PER_GROUP, () => {
+//   const password = faker.internet.password();
+//   return group.createUser({
+//     email: faker.internet.email(),
+//     username: faker.internet.userName(),
+//     password,
+//   }).then((user) => {
+//     console.log(
+//       '{email, username, password}',
+//       `{${user.email}, ${user.username}, ${password}}`
+//     );
+//     _.times(MESSAGES_PER_USER, () => MessageModel.create({
+//       userId: user.id,
+//       groupId: group.id,
+//       text: faker.lorem.sentences(3),
+//     }));
+//     return user;
+//   });
+// })).then((userPromises) => {
+//   // make users friends with all users in the group
+//   Promise.all(userPromises).then((users) => {
+//     _.each(users, (current, i) => {
+//       _.each(users, (user, j) => {
+//         if (i !== j) {
+//           current.addFriend(user);
+//         }
+//       });
+//     });
+//   });
+// })));
 
 
 

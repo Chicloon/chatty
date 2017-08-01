@@ -1,10 +1,16 @@
 export default `
+  type Tweet {
+    _id: String
+    text: String
+  }
+
+
   # custom scalars
   scalar Date
 
   #групповой чат
   type Group {
-    id: Int! #Id группы
+    id: ID! #Id группы
     name: String #имя группы
     users: [User]! # пользователи группы
     messages: [Message] # сообщения в группе
@@ -12,7 +18,7 @@ export default `
 
   # Пользователь
   type User {
-    id: Int!
+    id: ID!
     email: String!
     username: String!
     fullname: String
@@ -23,7 +29,7 @@ export default `
   
   #Сообщения пользователя в группе
   type Message {
-    id: Int
+    id: ID
     to: Group! # Группа в котороую было отправленно сообщение
     from: User! # От кого сообщение
     text: String 
@@ -32,8 +38,11 @@ export default `
 
   # Запросы для описанных типов
   type Query {
+
+    getTweets: [Tweet]
+
     # пользователя по id или email
-    user(email: String, id: Int): User
+    user(email: String, id: ID): User
 
     # всех пользователей
     users: [User]
@@ -46,7 +55,7 @@ export default `
     messages(groupId: Int, userId: Int): [Message]
 
     # группа по Id
-    group(id: Int!): Group
+    group(id: ID!): Group
   }
 
   type Mutation {
