@@ -1,1 +1,1 @@
-require('./schema');
+require('./user');
