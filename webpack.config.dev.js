@@ -13,11 +13,10 @@ module.exports = {
     ],
     resolve: {
         modules: ['node_modules', 'lib', 'app', 'vendor'],
-    },    
+    },
     output: {
-        path: path.join(__dirname, "dist"),
-        publicPath: "/",
-        filename: "app.[hash].js"
+        path: '/',
+        filename: 'bundle.js'
     },
     devtool: "eval",
     module: {
