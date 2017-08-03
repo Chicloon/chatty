@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 
@@ -29,8 +31,29 @@ async function auth(req, res, next) {
   }
 }
 
+async function cookieHandle (req, res, next) {
+   var cookie = req.cookies.cookieName;
+  if (cookie === undefined)
+  {
+    // no: set a new cookie
+    var randomNumber=Math.random().toString();
+    randomNumber=randomNumber.substring(2,randomNumber.length);
+    res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
+    console.log('cookie created successfully');
+  } 
+  else
+  {
+    // yes, cookie was already present 
+    console.log('cookie exists', cookie);
+  } 
+  next(); // <-- important!
+}
+
 export default app => {
   app.use(bodyParser.json());
+  app.use(cookieParser());
+  
+  app.use(cookieHandle);
   app.use(auth);
   app.use(
     '/graphiql',

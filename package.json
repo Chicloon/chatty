@@ -48,6 +48,7 @@
     "body-parser": "^1.17.2",
     "classnames": "^2.2.5",
     "cli-color": "^1.2.0",
+    "cookie-parser": "^1.4.3",
     "css-declaration-sorter": "^2.0.0",
     "css-mqpacker": "^5.0.1",
     "express": "^4.15.3",
