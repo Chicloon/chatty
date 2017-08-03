@@ -1,26 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { Router, hashHistory, Route, IndexRoute } from 'react-router';
 
-import App from './App';
+import App from './components/App';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
+import Dashboard from './components/Dashboard';
+import requireAuth from './components/requireAuth';
 
-import stores from './stores';
+const networkInterface = createNetworkInterface({
+  uri: '/graphql',
+  opts: {
+    credentials: 'same-origin',
+  },
+});
 
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id,
+  networkInterface,
+});
 
-const render = (Component) => {	
-	ReactDOM.render(
-		<AppContainer>
-			<App />
-		</AppContainer>,
-		document.getElementById('root')
-	);
+const Root = () => {
+  return (
+    	<AppContainer>
+    <ApolloProvider client={client}>
+      <Router history = {hashHistory}>
+        <Route path='/' component={App} >
+          <Route path='login' component={LoginForm} />
+          <Route path='singup' component={SignupForm} />
+          <Route path='dashboard' component={requireAuth(Dashboard)} />
+        </Route>
+      </Router>
+    </ApolloProvider>   
+    	</AppContainer>
+  );
 };
 
-render(App);
-
-// Hot Module Replacement API
-if (module.hot) {
-	module.hot.accept('./App', () => {
-		render(App)
-	});
-}
+ReactDOM.render(<Root />, document.querySelector('#root'));
