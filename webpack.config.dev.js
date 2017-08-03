@@ -4,7 +4,9 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: [
-        "react-hot-loader/patch",              
+        "react-hot-loader/patch",
+        "webpack-dev-server/client?http://0.0.0.0:3000",
+        "webpack/hot/only-dev-server",
         "babel-polyfill",
         "whatwg-fetch",
         "./client/index"
@@ -12,9 +14,23 @@ module.exports = {
     resolve: {
         modules: ['node_modules', 'lib', 'app', 'vendor'],
     },
+    devServer: {
+        hot: true,
+        contentBase: path.resolve(__dirname, "dist"),
+        port: 3000,
+        host: "0.0.0.0",
+        publicPath: "/",
+        historyApiFallback: true,
+        disableHostCheck: true,
+        	proxy: {
+			'/api': 'http://localhost:4444',
+			'/graphql': 'http://localhost:4000'
+		},
+    },
     output: {
-        path: '/',
-        filename: 'bundle.js'
+        path: path.join(__dirname, "dist"),
+        publicPath: "/",
+        filename: "app.[hash].js"
     },
     devtool: "eval",
     module: {

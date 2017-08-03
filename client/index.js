@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { Router, hashHistory, Route, IndexRoute } from 'react-router';
@@ -25,7 +24,6 @@ const client = new ApolloClient({
 
 const Root = () => {
   return (
-    	<AppContainer>
     <ApolloProvider client={client}>
       <Router history = {hashHistory}>
         <Route path='/' component={App} >
@@ -35,7 +33,6 @@ const Root = () => {
         </Route>
       </Router>
     </ApolloProvider>   
-    	</AppContainer>
   );
 };
 
