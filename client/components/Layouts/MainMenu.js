@@ -33,6 +33,7 @@ class MainMenu extends Component {
 
         <Item key="1">
           This is a menuItem
+            <Link to='/chat/' />
           </Item>
       </Menu>
     );
