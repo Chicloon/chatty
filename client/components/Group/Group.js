@@ -4,18 +4,18 @@ import { Route, Link } from "react-router-dom";
 
 // import c from '../';
 
-@inject(["appState"])
+// @inject(["appState"])
 class Group extends Component {
     constructor(props) {
         super(props);
-        this.store = this.props.appState;
+        // this.store = this.props.appState;
     }
 
     render() {
-        const store = this.store;
+        // const store = this.store;
         return (
             <div>
-                <div> {store.test}  </div>
+                {/* <div> {store.test}  </div> */}
                 Main Layout
             </div>
         );
