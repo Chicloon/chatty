@@ -4,6 +4,10 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { Router, hashHistory, Route, IndexRoute } from 'react-router';
 
+import { Provider } from 'mobx-react'
+import stores from './stores';
+
+
 import App from './components/App';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -25,6 +29,7 @@ const client = new ApolloClient({
 const Root = () => {
   return (
     <ApolloProvider client={client}>
+		<Provider {...stores}>
       <Router history = {hashHistory}>
         <Route path='/' component={App} >
           <Route path='login' component={LoginForm} />
@@ -32,6 +37,7 @@ const Root = () => {
           <Route path='dashboard' component={requireAuth(Dashboard)} />
         </Route>
       </Router>
+			</Provider> 
     </ApolloProvider>   
   );
 };
