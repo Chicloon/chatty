@@ -47,12 +47,12 @@ class App extends Component {
 						<LocaleProvider locale={ruRU}>
 							<Layout >
 								<Switch>
-									<Redirect from='/' exact to='/groups' /> 
+									<Redirect from='/' exact to='/groups' />
 									<Route path="/groups" exact component={Client.Group} />
 									{/* <Route path="/groups" exact component={Client.Group} /> */}
 									{/* <Route path="/chat" component={Client.Chat} /> */}
 									<Route path="/chat/:chat" component={Client.Chat} />
-									 <Route path="*" component={NotFound} /> 
+									<Route path="*" component={NotFound} />
 								</Switch>
 							</Layout>
 						</LocaleProvider>
@@ -61,7 +61,6 @@ class App extends Component {
 			</ ApolloProvider>
 		);
 	}
-
 }
 
 export default App;

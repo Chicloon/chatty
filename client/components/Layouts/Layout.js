@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
-import { inject, observer } from "mobx-react";
-import LazyRoute from "lazy-route";
+import { Route, Link, Redirect } from "react-router-dom";
+
 import DevTools from "mobx-react-devtools";
+import { graphql, compose } from 'react-apollo';
 
 import query from '../../queries/CurrentUser';
 import mutation from '../../mutations/Logout';
@@ -14,35 +14,52 @@ import MainMenu from './MainMenu';
 import HeaderComponent from './HeaderComponent';
 import Login from './Login';
 
-export default class App extends Component {
-  
+class App extends Component {
+
   constructor(props) {
     super(props);
     this.user = null;
     this.loading = true;
   }
 
-
-  componentWillMount() {
-    if (this.props.data) {
-     const { loading, user } = this.props.data;
-     this.user = user;
-     this.loading = loading;
+  componenWillMount() {
+    if (this.props.data.user) {
+      Redirect
     }
   }
+
+  componentWillUpdate(nextProps) {
+    // this.pops - the old, current set of props
+    // nextProps - the next set of props that will be 
+    // in place when component rerenders
+
+    if(!this.props.data.user && nextProps.data.user) {
+      this.authenticated = true;
+    }
+  }
+
+  // componentWillMount() {
+  //   if (this.props.data) {
+  //     const { loading, user } = this.props.data;
+  //     this.user = user;
+  //     this.loading = loading;
+  //   }
+  // }
 
 
 
   render() {
-    if(!this.user) {
       console.log(this.props);
+    if (!this.authenticated) {
       return (<Login />);
     }
 
-    if(this.user) return (
+    if (this.authenticated) return (
+
+      
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ marginBottom: '12px' }} >
-           <HeaderComponent />          
+          <HeaderComponent />
         </Header>
         <Layout>
           <Sider
@@ -62,3 +79,9 @@ export default class App extends Component {
     );
   }
 }
+
+
+const userQuery = graphql(query);
+
+
+export default compose(userQuery)(App);
