@@ -43,6 +43,7 @@ class HeaderComponent extends Component {
     console.log(this.props);
     return (
       <Row type="flex" justify="space-between">
+      
         <Col span={22} style={{background: 'blue'}}>
           <Menu
             theme="dark"

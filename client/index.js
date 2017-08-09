@@ -4,20 +4,12 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from './App';
 
-const render = (Component) => {	
-	ReactDOM.render(
+const Root = () => {	
+	return (
 		<AppContainer>
 			<App />
-		</AppContainer>,
-		document.getElementById('root')
-	);
+		</AppContainer>
+	)	
 };
 
-render(App);
-
-// Hot Module Replacement API
-if (module.hot) {
-	module.hot.accept('./App', () => {
-		render(App)
-	});
-}
+ReactDOM.render(<Root />	,document.getElementById('root'));

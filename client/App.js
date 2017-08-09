@@ -21,7 +21,7 @@ import * as Client from './components';
 import NotFound from './NotFound';
 import Group from './components/Group/Group';
 
-import Layout from './components/Layouts/Layout';
+import MainLayout from './components/Layouts/MainLayout';
 
 
 const networkInterface = createNetworkInterface({
@@ -45,7 +45,7 @@ class App extends Component {
 				<Router>
 					<Provider {...stores}>
 						<LocaleProvider locale={ruRU}>
-							<Layout >
+							<MainLayout >
 								<Switch>
 									<Redirect from='/' exact to='/groups' />
 									<Route path="/groups" exact component={Client.Group} />
@@ -54,7 +54,7 @@ class App extends Component {
 									<Route path="/chat/:chat" component={Client.Chat} />
 									<Route path="*" component={NotFound} />
 								</Switch>
-							</Layout>
+							</MainLayout>
 						</LocaleProvider>
 					</Provider>
 				</Router>
