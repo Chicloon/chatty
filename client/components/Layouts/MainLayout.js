@@ -7,7 +7,7 @@ import { graphql, compose } from 'react-apollo';
 import query from '../../queries/CurrentUser';
 import mutation from '../../mutations/Logout';
 
-import { Layout } from 'antd';
+import { Layout, Row } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 
 import MainMenu from './MainMenu';
@@ -44,7 +44,7 @@ class MainLayout extends Component {
       return (
         <Layout>
           <Content>
-            <Login />
+           <h1 style={{textAlign: 'center'}}> Необходима авторизация </h1>
           </Content>
         </Layout>
       )
@@ -56,10 +56,10 @@ class MainLayout extends Component {
     console.log(this.props);
     if (!this.props.data.loading) {
       return (
-        <Layout style={{ minHeight: '100vh' }}>
-          <Header style={{ marginBottom: '12px' }} >
+        <Layout style={{ minHeight: '100vh' }}>          
+            <Row type="flex" justify="end" align="middle" style={{ marginBottom: '24px', height: '64px', background: 'black'}}>
             <HeaderComponent />
-          </Header>
+          </Row>
           {this.renderChat()}
         </Layout>
       );

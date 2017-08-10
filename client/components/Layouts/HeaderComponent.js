@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import { Menu, Icon, Row, Col } from 'antd';
+import { Menu, Icon, Row, Col, Button, Popover } from 'antd';
 const { Item } = Menu;
+
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
 
 import query from '../../queries/CurrentUser';
 import mutation from '../../mutations/Logout';
+
 
 class HeaderComponent extends Component {
 
@@ -16,6 +20,14 @@ class HeaderComponent extends Component {
     });
   }
 
+  onLogin() {
+
+  }
+
+  onSingup() {
+
+  }
+
   renderButtons() {
     const { loading, user } = this.props.data;
 
@@ -23,16 +35,18 @@ class HeaderComponent extends Component {
 
     if (user) {
       return (
-
-        <a onClick={this.onLogoutClick.bind(this)}>Logout </a>
-
+        <Button onClick={this.onLogoutClick.bind(this)}>Logout </Button>
       );
     }
     return (
       <div>
-        <Link to='/singup'>Sinup</Link>
-        <Link to='/singup'>Sinup</Link>
+        <Popover placement="bottomLeft" content={<LoginForm />} title="Login" trigger="click" >
+          <Button>Login</Button>
+        </Popover>
 
+        <Popover placement="bottomRight" content={<SignupForm />} title="Signup" trigger="click">
+          <Button>Signup</Button>
+        </Popover>
       </div>
     );
 
@@ -41,25 +55,9 @@ class HeaderComponent extends Component {
   render() {
     console.log(this.props);
     return (
-      <Row type="flex" justify="space-between">
-      
-        <Col span={22} style={{background: 'blue'}}>
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            style={{ lineHeight: 'inherit' }}
-          >
-            <Item>
-              <Link className="brand-logo left" to='/'>
-                Home
-          </Link>
-            </Item>
-          </Menu>
-        </Col>
-        <Col span={2} style={{background: 'red'}}>
-          {this.renderButtons()}
-        </Col>
-      </Row>
+      <div style={{ padding: '24px' }}>
+        {this.renderButtons()}
+      </div>
     );
   }
 }

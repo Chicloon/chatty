@@ -20,7 +20,7 @@ class NormalLoginForm extends Component {
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+            <Input autoFocus prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
             )}
         </FormItem>
         <FormItem>
@@ -30,18 +30,10 @@ class NormalLoginForm extends Component {
             <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
             )}
         </FormItem>
-        <FormItem >
-          
+        <FormItem >          
           <Button type="primary" htmlType="submit" style={{width: '100%' }}>
             Log in
-          </Button>
-        </FormItem>
-           <FormItem >
-             
-          нет аккаунта? Загристрируйтесь с этими введенными данными.
-        <Button type="primary" htmlType="submit" style={{width: '100%' }}>
-            Sing in
-          </Button>
+          </Button>       
          </FormItem >
       </Form>   
     );
