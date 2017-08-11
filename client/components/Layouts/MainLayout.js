@@ -8,11 +8,10 @@ import query from '../../queries/CurrentUser';
 import mutation from '../../mutations/Logout';
 
 import { Layout, Row } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 import MainMenu from './MainMenu';
 import HeaderComponent from './HeaderComponent';
-import Login from './Login';
 
 class MainLayout extends Component {
 
@@ -44,7 +43,7 @@ class MainLayout extends Component {
       return (
         <Layout>
           <Content>
-           <h1 style={{textAlign: 'center'}}> Необходима авторизация </h1>
+            <h1 style={{ textAlign: 'center' }}> Необходима авторизация </h1>
           </Content>
         </Layout>
       )
@@ -53,11 +52,11 @@ class MainLayout extends Component {
 
 
   render() {
-    console.log(this.props);
+    console.log('Main Layout', this.props);
     if (!this.props.data.loading) {
       return (
-        <Layout style={{ minHeight: '100vh' }}>          
-            <Row type="flex" justify="end" align="middle" style={{ marginBottom: '24px', height: '64px', background: 'black'}}>
+        <Layout style={{ minHeight: '100vh' }}>
+          <Row type="flex" justify="end" align="middle" style={{ marginBottom: '24px', height: '64px', background: 'black' }}>
             <HeaderComponent />
           </Row>
           {this.renderChat()}

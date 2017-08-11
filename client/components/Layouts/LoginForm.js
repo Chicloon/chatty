@@ -7,8 +7,8 @@ class NormalLoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
+      if (!err) {      
+        this.props.onSubmit(values);
       }
     });
   }
@@ -17,7 +17,7 @@ class NormalLoginForm extends Component {
     return (     
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem style={{minHeight: '0'}}>
-          {getFieldDecorator('userName', {
+          {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
             <Input autoFocus prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
