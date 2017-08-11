@@ -24,13 +24,16 @@ class HeaderComponent extends Component {
 
   handleLogin =({username, password})=> {
     this.props.loginMutation({
-      variables: { email: username, password },
+      variables: { username, password },
       refetchQueries: [{ query }]
     })
   }
 
   handleSignup = ({username, password}) => {
-
+    this.props.signupMutation({
+      variables: { username, password },
+      refetchQueries: [{ query }]
+    })
   }
 
   renderButtons() {

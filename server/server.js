@@ -6,7 +6,18 @@ const session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./services/auth');
 const MongoStore = require('connect-mongo')(session);
-const schema = require('./schema/schema');
+import { makeExecutableSchema } from 'graphql-tools';
+
+// const schema = require('./schema/schema');
+
+import typeDefs from './graphql/schema';
+import resolvers from './graphql/resolvers';
+
+
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
 // Create a new Express application
 const app = express();

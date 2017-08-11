@@ -10,34 +10,18 @@ export default `
   }
 
   type User {
-    _id: ID!
-    username: String
-    email: String!
-    firstname: String
-    lastname: String
-    avatar: String
-    createdAt: Date
-    updatedAt: Date
-  }
-
-  type Tweet {
-    _id: ID
-    text: String
-    createdAt: Date
-    updatedAt: Date
+    id: ID!
+    username: String   
   }
 
   type Query {
-    getTweet(_id: ID): Tweet
-    getTweets: [Tweet]
+    user(id: ID): User
   }
 
   type Mutation {
-    createTweet(text: String!): Tweet
-    updateTweet(_id: ID, text: String, email: String): Tweet
-    deleteTweet(_id: ID): Status
-    signup(email: String!, fullName: String!, password: String!, avatar: String, username: String): Auth
-    login(email: String!, password: String!): Auth
+    login (username: String!, password: String!): User
+    logout: User
+    signup (username: String!, password: String!): User 
   }
 
   schema {

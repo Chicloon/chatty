@@ -6,7 +6,7 @@
   "scripts": {
     "start": "start npm run server && start npm run client",
     "client": "webpack-dev-server --config webpack.config.dev.js",
-    "server": "nodemon --watch server --watch package.json index.js --exec babel-node --presets es2015,stage-2"
+    "server": "nodemon --watch server --watch package.json server/index.js --exec babel-node --presets es2015,stage-2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
