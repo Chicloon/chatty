@@ -44,8 +44,9 @@ export default () => {
   //           })
   //       })
   //   });
+// const newChat = new Chat();
 
-Chat.addUser('599169fa32eb843bacae987b', '598d9f01e467333c48bad194', 1);
+Chat.addUser('5991807ae311c77ad3820996', '598d9f01e467333c48bad194');
 
   // console.log('after', users);
 
