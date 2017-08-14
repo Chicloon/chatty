@@ -1,5 +1,6 @@
 import Chat from './models/Chat';
 import User from './models/User';
+import Message from './models/Message';
 
 export default () => {
   console.log('========================================');
@@ -7,10 +8,34 @@ export default () => {
   // newChat.find({}).populate('messages').exec((err, messages) => {
   //  console.log(messages); 
   // })
+  
+  // const message = new Message({content: 'Message content', user: '598d9f01e467333c48bad194'});
+  // message.save()
+  //   .then((res)=> console.log('message created', res))
+  
+// const chat = new Chat();
+// chat.save()
 
+  // Chat.addUser('5991807ae311c77ad3820996', '598d9f01e467333c48bad194');
+
+//  chat ObjectId("5991a807c8bb733eec4bd202")
+
+  // Chat.addMessage('59916a0b6d7fec20b82d1e18', '59919fd73200a50084b4ddeb')
+  //   .then(res=>{
+  //     console.log('res', res);
+     
+  //   })
+
+
+    // Chat
+    // .findById('59916a0b6d7fec20b82d1e18')
+    // .populate('users.user')
+    // .exec((err, messages)=> {
+    //   console.log('messages', messages);
+    // })
 
   // const user = User.findOne({_id: '5990e81e7e7bd14a465d1942'}, (res)=>console.log(res));
-
+  
   // user ObjectId("598d9f01e467333c48bad194")
 
   //me  ObjectId("598d9cbae467333c48bad192")
@@ -46,7 +71,6 @@ export default () => {
   //   });
 // const newChat = new Chat();
 
-Chat.addUser('5991807ae311c77ad3820996', '598d9f01e467333c48bad194');
 
   // console.log('after', users);
 
@@ -64,12 +88,12 @@ Chat.addUser('5991807ae311c77ad3820996', '598d9f01e467333c48bad194');
   // // })
 
 
-  // Chat
-  //   .findById('599169fa32eb843bacae987b')
-  //   .populate('user', 'username password')
-  //   .exec((err, user) => {
-  //     console.log(user);
-  //   })
+  Chat
+    .findById('5991807ae311c77ad3820996')
+    .populate('[users]')
+    .exec((err, user) => {
+      console.log(user);
+    })
 
 
   // const chat = new Chat ({name: 'New Chat2', private: false, user: '5990e81e7e7bd14a465d1942'});

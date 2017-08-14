@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
 const MessageSchema = new Schema({
-  name: String,
   content: String,
   user: {
     type: Schema.Types.ObjectId,
