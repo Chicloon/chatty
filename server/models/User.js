@@ -7,7 +7,19 @@ import mongoose, { Schema } from 'mongoose';
 // plain text - see the authentication helpers below.
 const UserSchema = new Schema({
   username: String,
-  password: String
+  password: String,
+  chats: [{
+    type: Schema.Types.ObjectId,
+    ref: 'chat'
+  }],
+  messages: [{
+    type: Schema.Types.ObjectId,
+    ref: 'message'
+  }],
+  chat: {
+    type: Schema.Types.ObjectId,
+    ref: 'chat'
+  }
 });
 
 // The user's password is never saved in plain text.  Prior to saving the
