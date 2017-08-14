@@ -4,6 +4,8 @@ const LocalStrategy = require('passport-local').Strategy;
 
 import User from '../models/User';
 
+// const User = mongoose.model('user');
+
 // SerializeUser is used to provide some identifying token that can be saved
 // in the users session.  We traditionally use the 'ID' for this.
 passport.serializeUser((user, done) => {

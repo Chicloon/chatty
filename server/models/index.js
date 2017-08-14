@@ -1,1 +1,3 @@
-require('./user');
+// require('./User');
+import './User';
+
