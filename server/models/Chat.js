@@ -21,6 +21,21 @@ const ChatSchema = new Schema({
 );
 
 
+ChatSchema.statics.createChat = function (name, user) {
+  // console.log(name, user);
+  if (!user) {
+    throw new Error('Need to be loggedin')
+  }
+  
+  return new Chat({ name }).save()
+      .then(chat => {
+        Chat.addUser(chat._id, user._id, 10);
+        console.log(chat);
+        return chat        
+      });
+
+}
+
 ChatSchema.statics.addUser = function (chatId, userId, access) { 
   return this.findOne({ _id: chatId })
     .then(chat => {

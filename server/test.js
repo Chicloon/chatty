@@ -5,13 +5,17 @@ import Message from './models/Message';
 export default () => {
   console.log('========================================');
 
-const message = async(Message.findById('5993beec517d0c3e3b4d63ed'))
-const rep = await console.log(message._id)
-// User.findById('5993a75ac330ca622587ad7d')
-//   .then(user=>{
-//     user.messages.push(message._id);
-//   //  console.log(user);
-  // })
+// const message = Message.findById('5993beec517d0c3e3b4d63ed')
+//   .then(message=>{
+//     User.findById('5993dc625a6f014a56763df8')
+//       .then(user=>{
+//         user.messages.push(message._id);
+//        console.log(user);
+//       })
+//   })
+
+
+
 
 // console.log(user);
   // Chat.addUser('5993a86600bd5a6f9ea5768d', '5993ac687c87b61821353048')
