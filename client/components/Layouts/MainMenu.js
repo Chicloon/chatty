@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo';
 
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 const { Item } = Menu;
 
 // import query from '../src/graphql/query/groups';
@@ -19,23 +19,20 @@ class MainMenu extends Component {
     // }
 
     return (      
+      <div>
+        <Button style={{width: '100%', marginBottom:'12px'}}> Создать чат </Button>
+         <h3 style={{textAlign: 'center'}}> Список чатов </h3>
       <Menu
         theme="light"
         module="inline"
       >      
-        {/* {groups.map(el =>
-          <Item key={el.id}>
-            <Icon type="plus-square-o" />
-            <span> {el.name} </span>
-            <Link to={`/chat/${el.id}`} />
-          </Item>
-        )} */}
-
+       
         <Item key="1">
           This is a menuItem
             <Link to='/chat/' />
           </Item>
       </Menu>
+      </div>
     );
   }
 }

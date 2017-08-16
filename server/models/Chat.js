@@ -21,17 +21,18 @@ const ChatSchema = new Schema({
 );
 
 
-ChatSchema.statics.addUser = function (chatId, userId, access) {
-  console.log(access);
+ChatSchema.statics.addUser = function (chatId, userId, access) { 
   return this.findOne({ _id: chatId })
     .then(chat => {
       User.findById(userId)
         .then(user => {
-          chat.users.push({ user: user._id, access: access || 10})          
+          chat.users.push({ user: user._id, access: access || 1 })
           user.chats.push(chat._id);
-          return Promise.all([user.save()], [chat.save()])
-        })        
-    })
+          user.save();          
+        })
+        return Promise.all([chat.save()])
+          .then(([chat])=>  chat)      
+    })    
 }
 
 ChatSchema.statics.addMessage = function (chatId, messageId) {
@@ -39,8 +40,8 @@ ChatSchema.statics.addMessage = function (chatId, messageId) {
     .then(chat => {
       chat.messages.push(messageId);
       return Promise.all([chat.save()])
-        .then(chat => chat)
-    }); 
+        .then(([chat]) => chat)
+    });
 }
 
 export default mongoose.model('chat', ChatSchema);

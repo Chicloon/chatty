@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt-nodejs';
 import crypto from 'crypto';
 import mongoose, { Schema } from 'mongoose';
 
+import Message from './Message';
 
 // Every user has an email and password.  The password is not stored as
 // plain text - see the authentication helpers below.
@@ -21,6 +22,20 @@ const UserSchema = new Schema({
     ref: 'chat'
   }
 });
+
+
+UserSchema.statics.addMessage = function (userId, content) {
+  return this.findOne({ _id: userId })
+    .then(user => {
+      const message = new Message({ content, user: userId });
+      user.messages.push(message);
+      return Promise.all([user.save(), message.save()])
+        .then(([user, message]) => {        
+          return message
+        })
+
+    })
+}
 
 // The user's password is never saved in plain text.  Prior to saving the
 // user model, we 'salt' and 'hash' the users password.  This is a one way

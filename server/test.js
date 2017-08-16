@@ -5,11 +5,36 @@ import Message from './models/Message';
 export default () => {
   console.log('========================================');
 
+const message = async(Message.findById('5993beec517d0c3e3b4d63ed'))
+const rep = await console.log(message._id)
+// User.findById('5993a75ac330ca622587ad7d')
+//   .then(user=>{
+//     user.messages.push(message._id);
+//   //  console.log(user);
+  // })
+
+// console.log(user);
+  // Chat.addUser('5993a86600bd5a6f9ea5768d', '5993ac687c87b61821353048')
+
+  // User.addMessage('5990e81e7e7bd14a465d1942', 'One more message')
+
+  // Chat
+  //   .findById('5991381108fc5911ead6d80d')
+  //   .populate('users.user', 'username')
+  //   .populate('messages')
+  //   .exec((err, chat) => {
+  //     // console.log(chat);
+  //     console.log(chat.users)
+  //   })
+
+// message 59939030e75acd7be98637e2
+
+
   // newChat.find({}).populate('messages').exec((err, messages) => {
   //  console.log(messages); 
   // })
   
-  // const message = new Message({content: 'Message content', user: '598d9f01e467333c48bad194'});
+  // const message = new Message({content: 'Message content', user: '5990e81e7e7bd14a465d1942'});
   // message.save()
   //   .then((res)=> console.log('message created', res))
   
@@ -87,13 +112,10 @@ export default () => {
 
   // // })
 
+  
 
-  Chat
-    .findById('5991807ae311c77ad3820996')
-    .populate('[users]')
-    .exec((err, user) => {
-      console.log(user);
-    })
+
+  
 
 
   // const chat = new Chat ({name: 'New Chat2', private: false, user: '5990e81e7e7bd14a465d1942'});

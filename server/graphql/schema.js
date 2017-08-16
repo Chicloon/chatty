@@ -19,20 +19,22 @@ export default `
     name: String!
     users: [ChatUser]
     messages: [Message]
+    createdAt: Date
   }
 
   type Message {
     id: ID!
+    content: String
     user: User
-    chat: Chat
+    chat: Chat    
     createdAt: Date
   }
 
   type User {
     id: ID!
     username: String
-    chat: String
-    chats: [Chat]   
+    messages: [Message]    
+    chats: [Chat]
   }
 
   type Query {
@@ -41,6 +43,8 @@ export default `
     chats: [Chat]
     chatUser(chatId: ID, userId: ID): ChatUser
     message(id: ID): Message
+    users: [User]
+    messages: [Message]
   }
 
   type Mutation {
@@ -49,6 +53,8 @@ export default `
     signup (username: String!, password: String!): User 
     sendMessage(userId: ID!, chatId: ID!): Message
     createChat(userId: ID, name: String): Chat
+    addUserToChat(userId: ID, chatId: ID): Chat
+    addMessage(content: String): Message
   }
 
   schema {

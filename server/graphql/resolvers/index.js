@@ -8,11 +8,15 @@ export default {
   Query: {
     user: UserResolvers.user,    
     chats: ChatResolvers.chats, 
+    users: UserResolvers.users,
+    messages: UserResolvers.messages,
   },
   Mutation: {    
     signup: UserResolvers.signup,
     login: UserResolvers.login,
     logout: UserResolvers.logout,
     createChat: ChatResolvers.createChat,
+    addUserToChat: ChatResolvers.addUserToChat,
+    addMessage: UserResolvers.addMessage,
   },  
 }
