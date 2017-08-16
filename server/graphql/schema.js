@@ -38,13 +38,14 @@ export default `
   }
 
   type Query {
-    user(id: ID): User
-    chat(id: ID): Chat
+    user(userId: ID): User
+    chat(chatId: ID): Chat
     chats: [Chat]
     chatUser(chatId: ID, userId: ID): ChatUser
     message(id: ID): Message
     users: [User]
     messages: [Message]
+    chatMessages(chatId: ID):[Message]
   }
 
   type Mutation {
@@ -54,7 +55,7 @@ export default `
     sendMessage(userId: ID!, chatId: ID!): Message
     createChat(userId: ID, name: String): Chat
     addUserToChat(userId: ID, chatId: ID): Chat
-    addMessage(content: String): Message
+    addMessage(content: String, userId: ID, chatId: ID): Message    
   }
 
   schema {

@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import mongoose, { Schema } from 'mongoose';
 
 import Message from './Message';
+import Chat from './Chat';
 
 // Every user has an email and password.  The password is not stored as
 // plain text - see the authentication helpers below.
@@ -24,13 +25,16 @@ const UserSchema = new Schema({
 });
 
 
-UserSchema.statics.addMessage = function (userId, content) {
+UserSchema.statics.addMessage = function (userId, chatId ,content) {
   return this.findOne({ _id: userId })
     .then(user => {
       const message = new Message({ content, user: userId });
+      const chat = Chat.findOne({_id: chatId});      
       user.messages.push(message);
+      console.log(chatchat);
       return Promise.all([user.save(), message.save()])
         .then(([user, message]) => {        
+          // console.log(chat);
           return message
         })
 

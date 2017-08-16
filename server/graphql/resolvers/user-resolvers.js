@@ -15,8 +15,8 @@ export default {
     req.logout();
     return user;
   },
-  user: (_, args, req) => {
-    return req.user;
+  user: (_, {userId}, req) => {
+    return User.findOne({_id: userId})
   },
   users:() => {
     return User.find()

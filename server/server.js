@@ -14,10 +14,12 @@ import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+// const schema = makeExecutableSchema({
+//   typeDefs,
+//   resolvers,
+// });
+
+import schema from './schema/schema';
 
 // Create a new Express application
 const app = express();

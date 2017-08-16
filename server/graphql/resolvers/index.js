@@ -7,9 +7,11 @@ export default {
   Date: GraphQLDate,
   Query: {
     user: UserResolvers.user,    
-    chats: ChatResolvers.chats, 
     users: UserResolvers.users,
-    messages: UserResolvers.messages,
+    chat: ChatResolvers.chat,
+    chats: ChatResolvers.chats,     
+    messages: UserResolvers.messages,    
+    chatMessages: ChatResolvers.chatMessages
   },
   Mutation: {    
     signup: UserResolvers.signup,
@@ -17,6 +19,6 @@ export default {
     logout: UserResolvers.logout,
     createChat: ChatResolvers.createChat,
     addUserToChat: ChatResolvers.addUserToChat,
-    addMessage: UserResolvers.addMessage,
+    addMessage: ChatResolvers.addMessage,
   },  
 }

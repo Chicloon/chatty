@@ -1,10 +1,11 @@
 import Chat from '../../models/Chat.js'
+import Message from '../../models/Message';
+
 
 export default {
   chats: (_, args) => {
     return Chat.find({})
       .populate('users.user')
-    // return (Chat.addUser('599103f873f6e0940f0443e1', '594b3d9b663f831991576f86' ));
   },
   createChat: async (_, { userId, name }, ctx) => {
     const { user } = ctx;
@@ -12,7 +13,7 @@ export default {
     if (!user) {
       throw new Error('need to be logged in');
     }
-    if (await Chat.findOne({name})) {
+    if (await Chat.findOne({ name })) {
       throw new Error('Chat with this name exists')
     }
 
@@ -25,5 +26,21 @@ export default {
   addUserToChat: (_, { userId, chatId }) => {
     return Chat.addUser(chatId, userId)
   },
+  addMessage: (_, { chatId, content}, req) => {
+    const { user } = req;
+    return Chat.addMessage(chatId, user._id, content);
+  },
+  chat(_, {chatId}) {
+    return Chat.findOne({_id: chatId})
+      .populate('messages')
+      .populate('messages.user')
+      .populate('users')
+      .populate('users.user')
+  },
+  chatMessages: (_, {chatId}) => {
+    return Message.find({chat: chatId})
+      .populate('user')
+  }
+  
 
 }
