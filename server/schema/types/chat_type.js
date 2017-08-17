@@ -1,29 +1,26 @@
 const graphql = require('graphql');
 const {
     GraphQLObjectType,
-    GraphQLString,
-    GraphQLID,
-    GraphQLList,
+  GraphQLString,
+  GraphQLID,
+  GraphQLList,
+  GraphQLInt
 } = graphql;
 
 import UserType from './user_type';
+import MemberType from './member_type';
 
 const ChatType = new GraphQLObjectType({
-    name: 'ChatType',
-    fields: {
-      id: { type: GraphQLID},
-      name: { type: GraphQLString},
-      users: {
-        type: new GraphQLList(UserType),
-        resolve(parentValue, args, req) {
-          // ДОделать тут
-        }
-      },
-
+  name: 'ChatType',
+  fields: () => ( {
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    members: {
+      type: new GraphQLList(MemberType),    
     }
+  }),
+});
 
-    id: ID!
-    name: String!
-    users: [ChatUser]
-    messages: [Message]
-    createdAt: Date
+export default ChatType;
+
+

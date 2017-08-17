@@ -18,22 +18,18 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'message'
   }],
-  chat: {
-    type: Schema.Types.ObjectId,
-    ref: 'chat'
-  }
 });
 
 
-UserSchema.statics.addMessage = function (userId, chatId ,content) {
+UserSchema.statics.addMessage = function (userId, chatId, content) {
   return this.findOne({ _id: userId })
     .then(user => {
       const message = new Message({ content, user: userId });
-      const chat = Chat.findOne({_id: chatId});      
+      const chat = Chat.findOne({ _id: chatId });
       user.messages.push(message);
       console.log(chatchat);
       return Promise.all([user.save(), message.save()])
-        .then(([user, message]) => {        
+        .then(([user, message]) => {
           // console.log(chat);
           return message
         })
@@ -41,6 +37,17 @@ UserSchema.statics.addMessage = function (userId, chatId ,content) {
     })
 }
 
+UserSchema.statics.findChats = function (userId) {
+  return this.findOne({ _id: userId })    
+    .populate('chats')
+    .then(user =>  user.chats)
+}
+
+UserSchema.statics.findMessages = function (userId) {
+  return this.findOne({_id: userId})
+    .populate('messages')
+    .then(user => user.messages)
+}
 // The user's password is never saved in plain text.  Prior to saving the
 // user model, we 'salt' and 'hash' the users password.  This is a one way
 // procedure that modifies the password - the plain text password cannot be

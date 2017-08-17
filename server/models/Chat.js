@@ -10,7 +10,7 @@ const ChatSchema = new Schema({
     unique: true,
   },
   private: Boolean,
-  users: [{
+  members: [{
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user'
@@ -26,7 +26,6 @@ const ChatSchema = new Schema({
 
 
 ChatSchema.statics.createChat = function (name, user) {
-  // console.log(name, user);
   if (!user) {
     throw new Error('Need to be loggedin')
   }
@@ -48,12 +47,9 @@ ChatSchema.statics.addUser = function (chatId, userId, access) {
           user.chats.push(chat._id);
           user.save();
         })
-      chat.users.push({ user: user._id, access: access || 1 })
+      chat.members.push({ user: user._id, access: access || 1 })
       return Promise.all([chat.save()])
-        .then(([chat]) => {
-          console.log('Chat updated', chat);
-          return chat
-        })
+        .then(([chat]) =>  chat)
     })
 
 }
@@ -69,12 +65,12 @@ ChatSchema.statics.addMessage = function (chatId, userId, content) {
         })
       chat.messages.push(message)
       return Promise.all([chat.save(), message.save()])
-        .then(([chat, message]) => {
-          console.log(chat);
-          console.log(message);
+        .then(([chat, message]) => {         
           return message
         })
     })
 }
+
+
 
 export default mongoose.model('chat', ChatSchema);
