@@ -7,7 +7,7 @@ const {
 import UserType from '.././types/user_type';
 const AuthService = require('../../services/auth');
 
-const usermutations = {
+const userMutations = {
   signup: {
     type: UserType,
     args: {
@@ -49,5 +49,5 @@ const usermutations = {
 
 
 
-export default usermutations
+export default userMutations
 

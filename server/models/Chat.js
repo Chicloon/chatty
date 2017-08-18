@@ -30,9 +30,8 @@ ChatSchema.statics.createChat = function (name, user) {
     throw new Error('Need to be loggedin')
   }
 
-  return new Chat({ name }).save()
+  return new Chat({ name, members: {user, access: 10 }}).save()
     .then(chat => {
-      Chat.addUser(chat._id, user._id, 10);
       console.log(chat);
       return chat
     });
@@ -49,9 +48,13 @@ ChatSchema.statics.addUser = function (chatId, userId, access) {
         })
       chat.members.push({ user: user._id, access: access || 1 })
       return Promise.all([chat.save()])
-        .then(([chat]) =>  chat)
+        .then(([chat]) => {
+          return User.findById(userId)
+            .then(user => {
+              return { user: user.id, access: access || 1 }
+            })
+        })
     })
-
 }
 
 ChatSchema.statics.addMessage = function (chatId, userId, content) {
@@ -65,7 +68,7 @@ ChatSchema.statics.addMessage = function (chatId, userId, content) {
         })
       chat.messages.push(message)
       return Promise.all([chat.save(), message.save()])
-        .then(([chat, message]) => {         
+        .then(([chat, message]) => {
           return message
         })
     })

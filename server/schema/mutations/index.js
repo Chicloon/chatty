@@ -5,10 +5,11 @@ const {
 
 
 import user from './user_mutations';
+import chat from './chat_mutations';
 
 const mutation = new GraphQLObjectType({
 	name: 'Mutation',	
-  fields: {...user},
+  fields: {...user, ...chat},
 });
 
 module.exports = mutation;
