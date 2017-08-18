@@ -8,9 +8,11 @@ const {
 // const UserType = require('./user_type');
 import UserType from './user_type';
 import ChatType from './chat_type';
+import MessageType from './message_type';
 
 import Chat from '../../models/Chat';
 import User from '../../models/User';
+import Message from '../../models/Message';
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -41,6 +43,13 @@ const RootQueryType = new GraphQLObjectType({
           .populate('members')
           .then(chat=> chat)
       }
+    },
+    messages: {
+      type: new GraphQLList(MessageType),
+      resolve() {
+        return Message.find({})
+      }
+
     }
   }
 });

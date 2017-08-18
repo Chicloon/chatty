@@ -69,6 +69,7 @@ ChatSchema.statics.addMessage = function (chatId, userId, content) {
       chat.messages.push(message)
       return Promise.all([chat.save(), message.save()])
         .then(([chat, message]) => {
+          console.log(message);
           return message
         })
     })
