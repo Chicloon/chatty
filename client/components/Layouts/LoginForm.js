@@ -30,6 +30,9 @@ class NormalLoginForm extends Component {
             <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
             )}
         </FormItem>
+        {(this.props.errors !== []) ? 
+        <FormItem> {this.props.errors.map(error=> <div key={error}> {error} </div>)} </FormItem> : ''
+        }
         <FormItem >          
           <Button type="primary" htmlType="submit" style={{width: '100%' }}>
             Log in

@@ -9,7 +9,7 @@ const {
 const AuthService = require('../../services/auth');
 
 import MemeberType from '.././types/member_type';
-import MessageType from '.././types/chat_type';
+import MessageType from '.././types/message_type';
 import ChatType from '.././types/chat_type';
 
 import Chat from '../../models/Chat';

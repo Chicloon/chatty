@@ -6,6 +6,8 @@ const {
   GraphQLList
 } = graphql;
 
+import GraphQLDate from 'graphql-date';
+
 import UserType from './user_type';
 import ChatType from './chat_type';
 
@@ -28,6 +30,9 @@ const MessageType = new GraphQLObjectType({
       resolve({chat}, args) {
         return Chat.findById(chat)
       }
+    },
+    createdAt: {
+      type: GraphQLDate
     }
   }),
 });

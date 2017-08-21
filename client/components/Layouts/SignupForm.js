@@ -7,7 +7,7 @@ class NormalLoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {    
+      if (!err) {
         this.props.onSubmit(values);
       }
     });
@@ -20,7 +20,7 @@ class NormalLoginForm extends Component {
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
-            <Input autoFocus  prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+            <Input autoFocus prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
             )}
         </FormItem>
         <FormItem>
@@ -30,12 +30,15 @@ class NormalLoginForm extends Component {
             <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
             )}
         </FormItem>
+        {(this.props.errors !== []) ?
+          <FormItem> {this.props.errors.map(error => <div key={error}> {error} </div>)} </FormItem> : ''
+        }
         <FormItem >
 
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             Sign Up
           </Button>
-        </FormItem>     
+        </FormItem>
       </Form>
     );
   }

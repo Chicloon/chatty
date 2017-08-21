@@ -44,13 +44,6 @@ const RootQueryType = new GraphQLObjectType({
           .then(chat=> chat)
       }
     },
-    messages: {
-      type: new GraphQLList(MessageType),
-      resolve() {
-        return Message.find({})
-      }
-
-    }
   }
 });
 

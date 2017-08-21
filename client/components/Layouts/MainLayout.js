@@ -10,7 +10,8 @@ import mutation from '../../mutations/Logout';
 import { Layout, Row } from 'antd';
 const { Sider, Content } = Layout;
 
-import MainMenu from './MainMenu';
+import RightMenu from './RightMenu';
+import LeftMenu from './LeftMenu';
 import HeaderComponent from './HeaderComponent';
 
 class MainLayout extends Component {
@@ -32,11 +33,20 @@ class MainLayout extends Component {
             collapsedWidth="35"
             onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
           >
-            <MainMenu />
+            <LeftMenu />
           </Sider>
           <Content style={{ margin: '12px  12px' }}>
             {this.props.children}
           </Content>
+          <Sider
+            className="sider"
+            style={{ background: '#fff' }}
+            breakpoint="sm"
+            collapsedWidth="35"
+            onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
+          >
+            <RightMenu />
+          </Sider>
         </Layout>
       )
     } else {
@@ -51,8 +61,7 @@ class MainLayout extends Component {
   }
 
 
-  render() {
-    console.log('Main Layout', this.props);
+  render() {    
     if (!this.props.data.loading) {
       return (
         <Layout style={{ minHeight: '100vh' }}>

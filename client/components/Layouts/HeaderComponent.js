@@ -16,10 +16,17 @@ import signup from '../../mutations/Signup';
 
 class HeaderComponent extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state={errors: []}
+  }  
+
   onLogoutClick = ()=> {
     this.props.logoutMutation({
       refetchQueries: [{ query }],
     });
+    this.setState({errors: []});
   }
 
   handleLogin =({username, password})=> {
@@ -27,6 +34,10 @@ class HeaderComponent extends Component {
       variables: { username, password },
       refetchQueries: [{ query }]
     })
+      .catch(res=> {
+        const errors = res.graphQLErrors.map(error => error.message);
+        this.setState ({errors });
+      });
   }
 
   handleSignup = ({username, password}) => {
@@ -48,11 +59,11 @@ class HeaderComponent extends Component {
     }
     return (
       <div>
-        <Popover placement="bottomLeft" content={<LoginForm onSubmit={this.handleLogin} />} title="Login" trigger="click" >
+        <Popover placement="bottomLeft" content={<LoginForm onSubmit={this.handleLogin} errors = {this.state.errors} />} title="Login" trigger="click" >
           <Button>Login</Button>
         </Popover>
 
-        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup}/>} title="Signup" trigger="click">
+        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup}  />} title="Signup" trigger="click">
           <Button>Signup</Button>
         </Popover>
       </div>
@@ -60,8 +71,7 @@ class HeaderComponent extends Component {
 
   }
 
-  render() {
-    console.log('Header', this.props);
+  render() {    
     return (
       <div style={{ padding: '24px' }}>
         {this.renderButtons()}

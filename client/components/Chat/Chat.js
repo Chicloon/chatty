@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
 moment.locale('ru');
 
-import query from '../src/graphql/query/group';
+import query from '../../queries/ChatMessages';
 
 
 import Message from './Message';
@@ -25,14 +25,14 @@ class Chat extends Component {
         if (this.props.data.loading) {
             return <div> ....loading </div>
         }
-        const messages = this.props.data.group.messages;
+        const messages = this.props.data.chat.messages;
 
         return (
             <div>
-                <h3 style={{textAlign: 'center', marginBottom: '12px', background:'#fff'}}> {this.props.data.group.name} </h3>
-                {messages.map(message => <Message key={message.id} user={message.from.username} message={message.text} createdAt ={moment(message.createdAt).format("HH:mm")} />
+                <h3 style={{textAlign: 'center', marginBottom: '12px', background:'#fff'}}> {this.props.data.chat.name} </h3>
+                {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt ={moment(message.createdAt).format("HH:mm")} />
                 )}
-                {this.props.match.params.chat}
+                <div> chat's ID {this.props.match.params.chat} </div>
             </div>
         );
     }
@@ -41,7 +41,7 @@ class Chat extends Component {
 const groupQuery = graphql(query, {
     options: props => ({
         variables: {
-            groupId: props.match.params.chat,
+            id: props.match.params.chat,
         },
     })
 });

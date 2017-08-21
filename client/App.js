@@ -47,10 +47,8 @@ class App extends Component {
 						<LocaleProvider locale={ruRU}>
 							<MainLayout >
 								<Switch>
-									<Redirect from='/' exact to='/groups' />
-									<Route path="/groups" exact component={Client.Group} />
-									{/* <Route path="/groups" exact component={Client.Group} /> */}
-									{/* <Route path="/chat" component={Client.Chat} /> */}
+									<Redirect from='/' exact to='/chats' />
+									<Route path="/chats" exact component={Client.Group} />
 									<Route path="/chat/:chat" component={Client.Chat} />
 									<Route path="*" component={NotFound} />
 								</Switch>
