@@ -22,8 +22,13 @@ class Chat extends Component {
     }
 
 
-    submitMessage =(message) => {
-        console.log(message);
+    submitMessage =(event) => {
+        if(event.charCode==13){
+            console.log(event.value);    
+            console.log(event.target.value);
+            event.target.value = '';
+    }
+     
     }
 
     render() {
@@ -55,8 +60,8 @@ class Chat extends Component {
                         alignSelf: 'flex-start',
                         width: '100%'
                     }}>
-                    <SendMessageForm onSubmit={this.submitMessage}/>
-                    
+                    {/* <SendMessageForm onSubmit={this.submitMessage}/>                     */}
+                    <input onKeyPress={this.submitMessage} style={{width: '100%'}}/>
                 </div>
 
             </div>
