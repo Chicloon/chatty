@@ -24,7 +24,8 @@ module.exports = {
         disableHostCheck: true,
         	proxy: {
 			'/api': 'http://localhost:4444',
-			'/graphql': 'http://localhost:4000'
+            '/graphql': 'http://localhost:4000',
+            '/subscriptions': 'ws://localhost:4000/subscriptions'
 		},
     },
     output: {

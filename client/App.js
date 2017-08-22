@@ -12,6 +12,7 @@ import ruRU from 'antd/lib/locale-provider/ru_RU';
 // Apollo for gql
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 //Stores
 import stores from './stores';
@@ -25,15 +26,25 @@ import MainLayout from './components/Layouts/MainLayout';
 
 
 const networkInterface = createNetworkInterface({
-	uri: '/graphql', // Ссылка на проксю из webpack.config.js
+	uri: '/graphql', // Ссылка на проксю из webpack.config.dev.js
 	opts: {
 		credentials: 'same-origin',
 	},
 });
 
+const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { 
+  reconnect: true,
+  connectionParams: {}
+})
+
+const networkInterfaceWithSubs = addGraphQLSubscriptions(
+	networkInterface,
+	wsClient
+);
+
 const client = new ApolloClient({
 	dataIdFromObject: o => o.id,
-	networkInterface,
+	networkInterface: networkInterfaceWithSubs
 });
 
 

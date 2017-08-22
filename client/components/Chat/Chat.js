@@ -11,6 +11,8 @@ import ChatMessages from '../../queries/ChatMessages';
 import CurrentUser from '../../queries/CurrentUser';
 import mutation from '../../mutations/SendMessage';
 
+import MessageAdded from '../../subscriptions/MessageAdded';
+
 import Message from './Message';
 import SendMessageForm from './SendMessageForm';
 
@@ -22,6 +24,22 @@ class Chat extends Component {
         this.store = this.props.appState;
         this.chatId = this.props.match.params.chat;
         this.user = '';
+    }
+
+    componentWillMount() {
+        console.log(this.props);
+        this.props.data.subscribeToMore({
+            document: MessageAdded,
+            updateQuery: (prev, {subscriptionData}) => {
+                if(!subscriptionData.data) {
+                    return prev;
+                }
+
+                console.log('got message on client', subscriptionData);
+                return 'Subscription data'
+            }
+
+        })
     }
 
     componentDidUpdate() {
@@ -158,6 +176,7 @@ class Chat extends Component {
 }
 
 const messageMutation = graphql(mutation);
+const messageSubscription = graphql(MessageAdded);
 
 const groupQuery = graphql(ChatMessages, {
     options: props => ({
@@ -170,5 +189,5 @@ const groupQuery = graphql(ChatMessages, {
 
 const userQuery = graphql(CurrentUser, { name: 'userData' });
 
-export default compose(groupQuery, userQuery, messageMutation)(Chat);
+export default compose(groupQuery, userQuery, messageMutation, messageSubscription)(Chat);
 

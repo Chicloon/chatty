@@ -6,11 +6,15 @@ const {
   GraphQLInt
 } = graphql;
 
+import { PubSub } from 'graphql-subscriptions';
+const pubsub = new PubSub();
+
+
 const AuthService = require('../../services/auth');
 
-import MemeberType from '.././types/member_type';
-import MessageType from '.././types/message_type';
-import ChatType from '.././types/chat_type';
+import MemeberType from '../types/member_type';
+import MessageType from '../types/message_type';
+import ChatType from '../types/chat_type';
 
 import Chat from '../../models/Chat';
 
@@ -21,9 +25,12 @@ const chatMutations = {
       chatId: {type: GraphQLID},
       content: {type: GraphQLString},
     },
-    resolve(_, {chatId, content}, req) {
+    async resolve(_, {chatId, content}, req) {
       const { user } = req;
-      return Chat.addMessage(chatId, user._id, content);
+      const message = await Chat.addMessage(chatId, user._id, content);
+      
+      pubsub.publish('messageAdded', {['messageAdded']: message});      
+      return message;
     }
   },
   addUser: {
