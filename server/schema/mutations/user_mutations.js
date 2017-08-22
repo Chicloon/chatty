@@ -26,15 +26,14 @@ const userMutations = {
       return user;
     }
   },
-  me: {
-    type: UserType,
-    resolve(parentValue, args, req) {
-      const { user } = req;
-      // req.logout();
-      console.log(req);
-      return user;
-    }
-  },
+  // me: {
+  //   type: UserType,
+  //   resolve(parentValue, args, req) {
+  //     const { user } = req;
+            
+  //     return user;
+  //   }
+  // },
   login: {
     type: UserType,
     args: {

@@ -1,12 +1,35 @@
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { createServer } from 'http';
+
+import schema from './schema/schema';
 const app = require('./server');
 
-import test from './test';
+const graphQLServer = createServer(app);
+
+const PORT = 4000;
+const SUBSCRIPTIONS_PATH = '/subscriptions';
 
 
+graphQLServer.listen(PORT, err => {
+  if (err) {
+    console.error(err);
+  } else {
+    new SubscriptionServer({
+      schema,
+      execute,
+      subscribe
+    }, {
+        server: graphQLServer,
+        path: SUBSCRIPTIONS_PATH
+      })
 
-
-app.listen(4000, () => {
-  console.log('Listening');
+    console.log(`App listen to port: ${PORT}`);
+  }
 });
 
-test();
+
+
+// app.listen(4000, () => {
+//   console.log('Listening');
+// });
