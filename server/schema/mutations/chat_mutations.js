@@ -6,8 +6,7 @@ const {
   GraphQLInt
 } = graphql;
 
-import { PubSub } from 'graphql-subscriptions';
-const pubsub = new PubSub();
+import pubsub from '../pubsub';
 
 
 const AuthService = require('../../services/auth');

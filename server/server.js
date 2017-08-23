@@ -13,6 +13,7 @@ import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';
+import cors from 'cors';
 
 // const schema = require('./schema/schema');
 
@@ -40,9 +41,11 @@ mongoose.Promise = global.Promise;
 // on success or failure
 mongoose.connect(MONGO_URI);
 mongoose.connection
-    .once('open', () => console.log('Connected to MongoLab instance.'))
-    .on('error', error => console.log('Error connecting to MongoLab:', error));
+  .once('open', () => console.log('Connected to MongoLab instance.'))
+  .on('error', error => console.log('Error connecting to MongoLab:', error));
 
+
+  app.use(cors('*'));
 // Configures express to use sessions.  This places an encrypted identifier
 // on the users cookie.  When a user makes a request, this middleware examines
 // the cookie and modifies the request object to indicate which user made the request
@@ -73,41 +76,45 @@ const GRAPHQL_PATH = '/graphql';
 const SUBSCRIPTIONS_PATH = '/subscriptions';
 
 
-// `context` must be an object and can't be undefined when using connectors
-// app.use('/graphql', bodyParser.json(), graphqlExpress({
-//   schema,
-//   context: {}, // at least(!) an empty object
-// }));
+//`context` must be an object and can't be undefined when using connectors
 
-// app.use('/graphiql', graphiqlExpress({
-//   endpointURL: GRAPHQL_PATH,
-//   subscriptionsEndpoint: `ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`,
-// }));
-
-// const graphQLServer = createServer(app);
-
-// graphQLServer.listen(GRAPHQL_PORT, () => {
-//   console.log(`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}${GRAPHQL_PATH}`);
-//   console.log(`GraphQL Subscriptions are now running on ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`);
-// });
-
-// // eslint-disable-next-line no-unused-vars
-// const subscriptionServer = SubscriptionServer.create({
-//   schema,
-//   execute,
-//   subscribe,
-// }, {
-//   server: graphQLServer,
-//   path: SUBSCRIPTIONS_PATH,
-// });
-
-
-
-
-app.use('/graphql', expressGraphQL({
+app.use('/graphql', bodyParser.json(), 
+  graphqlExpress(req => ({
+  
   schema,
-  graphiql: true
+  context: req
+  })),
+);
+
+app.use('/graphiql', graphiqlExpress({
+  endpointURL: GRAPHQL_PATH,
+  subscriptionsEndpoint: `ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`,
 }));
+
+const graphQLServer = createServer(app);
+
+graphQLServer.listen(GRAPHQL_PORT, () => {
+  console.log(`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}${GRAPHQL_PATH}`);
+  console.log(`GraphQL Subscriptions are now running on ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`);
+});
+
+// eslint-disable-next-line no-unused-vars
+const subscriptionServer = SubscriptionServer.create({
+  schema,
+  execute,
+  subscribe,
+}, {
+  server: graphQLServer,
+  path: SUBSCRIPTIONS_PATH,
+});
+
+
+
+
+// app.use('/graphql', expressGraphQL({
+//   schema,
+//   graphiql: true
+// }));
 
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
@@ -118,4 +125,4 @@ app.use('/graphql', expressGraphQL({
 // const webpackConfig = require('../webpack.config.dev.js');
 // app.use(webpackMiddleware(webpack(webpackConfig)));
 
-module.exports = app;
+// module.exports = app;

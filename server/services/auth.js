@@ -52,7 +52,6 @@ passport.use(new LocalStrategy({ usernameField: 'username' }, (username, passwor
 function signup({ username, password, req }) {
   const user = new User({ username, password });
   if (!username || !password) { throw new Error('You must provide an username and password.'); }
-
   return User.findOne({ username })
     .then(existingUser => {
       if (existingUser) { throw new Error('Username in use'); }
@@ -60,8 +59,7 @@ function signup({ username, password, req }) {
     })
     .then(user => {
       return new Promise((resolve, reject) => {
-        console.log(req);
-        req.logIn(user, (err) => {
+        req.login(user, (err) => {
           if (err) { reject(err); }
           resolve(user);
         });
@@ -74,11 +72,10 @@ function signup({ username, password, req }) {
 // function returns a function, as its indended to be used as a middleware with
 // Express.  We have another compatibility layer here to make it work nicely with
 // GraphQL, as GraphQL always expects to see a promise for handling async code.
-function login({ username, password, req }) {
+function login({ username, password, req }) {  
   return new Promise((resolve, reject) => {
     passport.authenticate('local', (err, user) => {
       if (!user) { reject('Invalid credentials.') }
-
       req.login(user, () => resolve(user));
     })({ body: { username, password } });
   });

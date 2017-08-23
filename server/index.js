@@ -28,8 +28,8 @@ const app = require('./server');
 //   }
 // });
 
+// app();
 
-
-app.listen(4000, () => {
-  console.log('Listening');
-});
+// app.listen(4000, () => {
+//   console.log('Listening');
+// });
