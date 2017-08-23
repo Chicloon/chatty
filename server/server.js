@@ -13,7 +13,7 @@ import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';
-import cors from 'cors';
+
 
 // const schema = require('./schema/schema');
 
@@ -45,7 +45,7 @@ mongoose.connection
   .on('error', error => console.log('Error connecting to MongoLab:', error));
 
 
-  app.use(cors('*'));
+
 // Configures express to use sessions.  This places an encrypted identifier
 // on the users cookie.  When a user makes a request, this middleware examines
 // the cookie and modifies the request object to indicate which user made the request
