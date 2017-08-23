@@ -79,8 +79,7 @@ const SUBSCRIPTIONS_PATH = '/subscriptions';
 //`context` must be an object and can't be undefined when using connectors
 
 app.use('/graphql', bodyParser.json(), 
-  graphqlExpress(req => ({
-  
+  graphqlExpress(req => ({  
   schema,
   context: req
   })),
