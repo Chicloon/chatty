@@ -3,44 +3,33 @@ import Message from '../../models/Message';
 
 
 export default {
+  // queries
+  chat: (parentValue, {id}) => {
+    return Chat.findById(id)
+  },
   chats: (_, args) => {
     return Chat.find({})
-      .populate('users.user')
+    .populate('members')
+    .then(chat=> chat)
+    
   },
-  createChat: async (_, { userId, name }, ctx) => {
-    const { user } = ctx;
-
-    if (!user) {
-      throw new Error('need to be logged in');
-    }
-    if (await Chat.findOne({ name })) {
-      throw new Error('Chat with this name exists')
-    }
-
-    return new Chat({ name }).save()
-      .then(chat => {
-        Chat.addUser(chat._id, user._id, 10)
-        return chat
-      });
-  },
-  addUserToChat: (_, { userId, chatId }) => {
-    return Chat.addUser(chatId, userId)
-  },
-  addMessage: (_, { chatId, content}, req) => {
+  // mutations
+  addMessage: async (_, {chatId, content}, req) => {
     const { user } = req;
-    return Chat.addMessage(chatId, user._id, content);
+    const message = await Chat.addMessage(chatId, user._id, content)
+    return message
   },
-  chat(_, {chatId}) {
-    return Chat.findOne({_id: chatId})
+  addUser: (_, {chatId, userId, access}) => {
+    return Chat.addUser(chatId, userId, access)        
+  },
+  createChat: (_, {name}, req) => {
+    const { user } = req;
+    return Chat.createChat(name, user)
+  },
+  // Field resolvers
+  messagesField: (parentValue, args) => {
+    return Chat.findById(parentValue.id)
       .populate('messages')
-      .populate('messages.user')
-      .populate('users')
-      .populate('users.user')
+      .then(chat => chat.messages);
   },
-  chatMessages: (_, {chatId}) => {
-    return Message.find({chat: chatId})
-      .populate('user')
-  }
-  
-
 }

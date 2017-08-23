@@ -60,6 +60,7 @@ function signup({ username, password, req }) {
     })
     .then(user => {
       return new Promise((resolve, reject) => {
+        console.log(req);
         req.logIn(user, (err) => {
           if (err) { reject(err); }
           resolve(user);

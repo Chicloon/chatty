@@ -1,15 +1,7 @@
 export default `
   scalar Date
 
-  type Status {
-    message: String!
-  }
-
-  type Auth {
-    token: String!
-  }
-
-  type ChatUser {    
+  type Member {    
     user: User
     access: Int
   }
@@ -17,9 +9,8 @@ export default `
   type Chat {
     id: ID!
     name: String!
-    users: [ChatUser]
-    messages: [Message]
-    createdAt: Date
+    members: [Member]
+    messages: [Message]    
   }
 
   type Message {
@@ -39,23 +30,18 @@ export default `
 
   type Query {
     user(userId: ID): User
-    chat(chatId: ID): Chat
-    chats: [Chat]
-    chatUser(chatId: ID, userId: ID): ChatUser
-    message(id: ID): Message
     users: [User]
-    messages: [Message]
-    chatMessages(chatId: ID):[Message]
+    chat(chatId: ID): Chat
+    chats: [Chat]    
   }
 
   type Mutation {
     login (username: String!, password: String!): User
     logout: User
     signup (username: String!, password: String!): User 
-    sendMessage(userId: ID!, chatId: ID!): Message
-    createChat(userId: ID, name: String): Chat
-    addUserToChat(userId: ID, chatId: ID): Chat
-    addMessage(content: String, userId: ID, chatId: ID): Message    
+    addMessage(chatId: ID!, content: String): Message
+    createChat(name: String): Chat
+    addUserToChat(userId: ID, chatId: ID, access: Int): Member    
   }
 
   schema {

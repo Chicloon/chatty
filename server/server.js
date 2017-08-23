@@ -6,7 +6,13 @@ const session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./services/auth');
 const MongoStore = require('connect-mongo')(session);
+
 import { makeExecutableSchema } from 'graphql-tools';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import bodyParser from 'body-parser';
+import { createServer } from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { execute, subscribe } from 'graphql';
 
 // const schema = require('./schema/schema');
 
@@ -14,12 +20,12 @@ import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 
 
-// const schema = makeExecutableSchema({
-//   typeDefs,
-//   resolvers,
-// });
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
-import schema from './schema/schema';
+// import schema from './schema/schema';
 
 // Create a new Express application
 const app = express();
@@ -60,6 +66,44 @@ app.use(passport.session());
 
 // Instruct Express to pass on any request made to the '/graphql' route
 // to the GraphQL instance.
+
+
+const GRAPHQL_PORT = 4000;
+const GRAPHQL_PATH = '/graphql';
+const SUBSCRIPTIONS_PATH = '/subscriptions';
+
+
+// `context` must be an object and can't be undefined when using connectors
+// app.use('/graphql', bodyParser.json(), graphqlExpress({
+//   schema,
+//   context: {}, // at least(!) an empty object
+// }));
+
+// app.use('/graphiql', graphiqlExpress({
+//   endpointURL: GRAPHQL_PATH,
+//   subscriptionsEndpoint: `ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`,
+// }));
+
+// const graphQLServer = createServer(app);
+
+// graphQLServer.listen(GRAPHQL_PORT, () => {
+//   console.log(`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}${GRAPHQL_PATH}`);
+//   console.log(`GraphQL Subscriptions are now running on ws://localhost:${GRAPHQL_PORT}${SUBSCRIPTIONS_PATH}`);
+// });
+
+// // eslint-disable-next-line no-unused-vars
+// const subscriptionServer = SubscriptionServer.create({
+//   schema,
+//   execute,
+//   subscribe,
+// }, {
+//   server: graphQLServer,
+//   path: SUBSCRIPTIONS_PATH,
+// });
+
+
+
+
 app.use('/graphql', expressGraphQL({
   schema,
   graphiql: true
