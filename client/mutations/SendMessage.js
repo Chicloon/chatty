@@ -1,7 +1,7 @@
-import gql from 'graphql-tag';
+import {gql} from 'react-apollo';
 
 export default gql`
-mutation addMessage($chatId: ID, $content: String) {
+mutation addMessage($chatId: ID!, $content: String) {
   addMessage(chatId: $chatId, content: $content) {
     id
     content

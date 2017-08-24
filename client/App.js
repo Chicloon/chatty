@@ -33,8 +33,7 @@ const networkInterface = createNetworkInterface({
 });
 
 const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { 
-  reconnect: true,
-  connectionParams: {}
+  reconnect: true
 })
 
 const networkInterfaceWithSubs = addGraphQLSubscriptions(

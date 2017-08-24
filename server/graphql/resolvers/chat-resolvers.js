@@ -1,6 +1,9 @@
 import Chat from '../../models/Chat.js'
 import Message from '../../models/Message';
 
+import { pubsub } from '../pubsub';
+
+const MESSAGE_ADDED = 'messageAdded';
 
 export default {
   // queries
@@ -16,7 +19,10 @@ export default {
   // mutations
   addMessage: async (_, {chatId, content}, req) => {
     const { user } = req;
-    const message = await Chat.addMessage(chatId, user._id, content)
+    const message = await Chat.addMessage(chatId, user._id, content);
+
+    pubsub.publish(MESSAGE_ADDED, {[MESSAGE_ADDED]: message});
+
     return message
   },
   addUser: (_, {chatId, userId, access}) => {
@@ -31,5 +37,9 @@ export default {
     return Chat.findById(parentValue.id)
       .populate('messages')
       .then(chat => chat.messages);
+  },
+  //Subscriptions 
+  messageAdded: {
+    subscribe: () => pubsub.asyncIterator(MESSAGE_ADDED)
   },
 }

@@ -3,6 +3,7 @@ import GraphQLDate from 'graphql-date';
 import UserResolvers from './user-resolvers'
 import ChatResolvers from './chat-resolvers';
 import MemberResolvers from './member-resolvers';
+import MessageRsolvers from './message-resolvers';
 
 export default {
   Date: GraphQLDate,
@@ -26,8 +27,15 @@ export default {
   Member: {
     user: MemberResolvers.userField
   },
+  Message: {
+    user: MessageRsolvers.userField,
+    chat: MessageRsolvers.chatField
+  },
   User: {
     chats: UserResolvers.chatsField,
     messages: UserResolvers.messagesField,
+  },
+  Subscription:{
+    messageAdded: ChatResolvers.messageAdded,
   }
 }

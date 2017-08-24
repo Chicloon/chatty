@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import {gql} from 'react-apollo';
 
 export default gql`
 {
@@ -6,11 +6,7 @@ export default gql`
     messageAdded {
       id
       content
-      createdAt
-      user{
-        id
-        username
-      }
+      createdAt   
     }
   }
 }

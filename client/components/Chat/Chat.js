@@ -11,7 +11,7 @@ import ChatMessages from '../../queries/ChatMessages';
 import CurrentUser from '../../queries/CurrentUser';
 import mutation from '../../mutations/SendMessage';
 
-import MessageAdded from '../../subscriptions/MessageAdded';
+import messageAdded from '../../subscriptions/messageAdded';
 
 import Message from './Message';
 import SendMessageForm from './SendMessageForm';
@@ -27,16 +27,17 @@ class Chat extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props);
-        this.props.data.subscribeToMore({
-            document: MessageAdded,
-            updateQuery: (prev, {subscriptionData}) => {
-                if(!subscriptionData.data) {
-                    return prev;
-                }
-
+        // console.log(this.props);
+        this.props.chatData.subscribeToMore({
+            document: messageAdded,
+            updateQuery: (prev, { subscriptionData }) => {
+                // if (!subscriptionData.data) {
+                //     return prev;
+                // }               
+                
                 console.log('got message on client', subscriptionData);
-                return 'Subscription data'
+                console.log(prev);
+                return prev
             }
 
         })
@@ -45,7 +46,6 @@ class Chat extends Component {
     componentDidUpdate() {
         if (!this.props.chatData.loading) {
             this.scrollToBottom();
-
         }
     }
 
@@ -53,8 +53,6 @@ class Chat extends Component {
         if (event.charCode == 13) {
             const content = event.target.value;
 
-            console.log(content);
-            console.log(this.user);
             this.props.mutate({
                 variables: {
                     chatId: this.chatId,
@@ -82,40 +80,6 @@ class Chat extends Component {
                 }],
             })
                 .then(event.target.value = '')
-
-            // sendMessage(message) {
-            //     this.props.mutate({
-            //         variables: {
-            //             text: message,
-            //             userId: 1,
-            //             groupId: this.props.match.params.chat
-            //         },
-            //         optimisticResponse: {
-            //             __typename: 'Mutation',
-            //             createMessage: {
-            //                 __typename: 'Message',
-            //                 createdAt: new Date().toISOString(),
-            //                 id: -1,
-            //                 text: message,
-            //                 from: {
-            //                     __typename: 'User',
-            //                     id: 1,
-            //                     username: 'Justyn.Kautzer',
-            //                 },
-            //                 to: {
-            //                     __typename: 'Group',
-            //                     id: this.props.match.params.chat
-            //                 }
-            //             }
-
-            //         },
-            //     })
-            //         // .then(this.props.data.refetch())
-            //         .catch((error)=> console.log('Smth happened', error));
-
-            //     console.log('msg:', message);
-
-
         }
 
     }
@@ -176,7 +140,7 @@ class Chat extends Component {
 }
 
 const messageMutation = graphql(mutation);
-const messageSubscription = graphql(MessageAdded);
+// const messageSubscription = graphql(MessageAdded);
 
 const groupQuery = graphql(ChatMessages, {
     options: props => ({
@@ -189,5 +153,7 @@ const groupQuery = graphql(ChatMessages, {
 
 const userQuery = graphql(CurrentUser, { name: 'userData' });
 
-export default compose(groupQuery, userQuery, messageMutation, messageSubscription)(Chat);
+export default compose(groupQuery, 
+    userQuery, 
+    messageMutation)(Chat);
 

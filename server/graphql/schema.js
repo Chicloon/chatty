@@ -31,7 +31,7 @@ export default `
   type Query {
     user(userId: ID): User
     users: [User]
-    chat(chatId: ID): Chat
+    chat(id: ID): Chat
     chats: [Chat]    
   }
 
@@ -44,9 +44,14 @@ export default `
     addUserToChat(userId: ID, chatId: ID, access: Int): Member    
   }
 
-  schema {
-    query: Query,
-    mutation: Mutation
+  type Subscription {
+    messageAdded: Message
+  }
 
+
+  schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
   }
 `;
