@@ -23,10 +23,9 @@ class HeaderComponent extends Component {
   }
 
   onLogoutClick = () => {
-    this.props.logoutMutation({
-      refetchQueries: [{ query }],
-    });
-    this.setState({ errors: [] });
+    localStorage.removeItem('chatty');    
+    // this.setState({ errors: [] });
+    this.props.data.refetch();
   }
 
   handleLogin = ({ username, password }) => {
@@ -46,19 +45,16 @@ class HeaderComponent extends Component {
       variables: { username, password },
       // refetchQueries: [{ query }]
     })
-    // .catch(res => {
-    //   const errors = res.graphQLErrors.map(error => error.message);
-    //   this.setState({ errors });
-    // })
-      .then(res => {        
-        if(res.graphQLErrors) {
-          console.log(res.graphQLErrors);
-        }
-        // localStorage.setItem('chatty', res.data.token);      
+      .then(res => {   
+        localStorage.setItem('chatty', res.data.signup.token);
         console.log(res.data.signup.token);
       })
-      // .then(()=> this.props.data.refetch())
-      console.log('--signup', signup);
+      .then(() => this.props.data.refetch())
+      .catch(res => {
+        const errors = res.graphQLErrors.map(error => error.message);
+        this.setState({ errors });
+      })
+
 
   }
 

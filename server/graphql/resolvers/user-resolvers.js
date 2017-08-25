@@ -22,7 +22,7 @@ export default {
   signup: async (_, { username, password }) => {
     try {     
       const checkUser = await User.findOne({username});
-      console.log(checkUser);
+      
       if(checkUser !== null) {
         throw new Error('username in use');
       }
