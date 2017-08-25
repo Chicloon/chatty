@@ -70,7 +70,7 @@ UserSchema.methods = {
   createToken() {
     return jwt.sign(
       {
-        _id: this._id
+        id: this._id
       },
       constants.JWT_SECRET
     )

@@ -6,11 +6,11 @@ import User from '../models/User';
 export async function requireAuth(user) {
   
   // console.log(user);
-  if (!user || !user._id) {
+  if (!user || !user.id) {
     throw new Error('Unauthorized!');
   }
 
-  const me = await User.findById(user._id);
+  const me = await User.findById(user.id);
 
   if (!me) {
     throw new Error('Unauthorized!');
