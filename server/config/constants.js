@@ -1,6 +1,7 @@
 export default {
-  PORT: process.env.PORT || 8080,
-  DB_URL: 'mongodb://localhost/tweet-development',
+  PORT: process.env.PORT || 4000,
+  DB_URL: 'mongodb://localhost/auth',
   GRAPHQL_PATH: '/graphql',
+  SUBSCRIPTIONS_PATH: '/subscriptions',
   JWT_SECRET: 'thisisasecret',
 };

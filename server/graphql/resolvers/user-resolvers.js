@@ -1,27 +1,54 @@
 import AuthService from '../../services/auth.js';
+import { requireAuth } from '../../services/auth';
 
 import User from '../../models/User';
 import Message from '../../models/Message';
 
 export default {
   // querries
-  user: (_, { userId }, req) => {
-    return req.user;
+  user:async (_, args, { user }) => {
+    try {
+      const me = await requireAuth(user);
+
+      return me;
+    } catch (error) {
+      throw error;
+    }
   },
   users: (_, args, req) => {
     return req.user&& User.find({});    
   },
   // mutations
-  login: (_, { username, password }, req) => {
-    return AuthService.login({ username, password, req })
+  signup: async (_, { username, password }) => {
+    try {      
+      const user = await User.create({ firstName, password });
+
+      return {
+        token: user.createToken(),
+      };
+    } catch (error) {
+      throw error;
+    }
   },
-  logout: (_, args, req) => {
-    const { user } = req;
-    req.logout();
-    return user;
-  },
-  signup: (_, { username, password }, req) => {
-    return AuthService.signup({ username, password, req });
+
+  login: async (_, { username, password }) => {
+    try {
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        throw new Error('User not exist!');
+      }
+
+      if (!user.authenticateUser(password)) {
+        throw new Error('Password not match!');
+      }
+
+      return {
+        token: user.createToken()
+      };
+    } catch (error) {
+      throw error;
+    }
   },
   // Fields resolvers
   chatsField: (parentValue, args) => {
