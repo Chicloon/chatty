@@ -41,20 +41,30 @@ class HeaderComponent extends Component {
       });
   }
 
-  handleSignup = ({ username, password }) => {
-    this.props.signupMutation({
+  handleSignup = async ({ username, password }) => {
+    const signup = await this.props.signupMutation({
       variables: { username, password },
       // refetchQueries: [{ query }]
     })
-      .then(res => {
-        console.log(res);
-        localStorage.setItem('chatty', res.data.token);      
+    // .catch(res => {
+    //   const errors = res.graphQLErrors.map(error => error.message);
+    //   this.setState({ errors });
+    // })
+      .then(res => {        
+        if(res.graphQLErrors) {
+          console.log(res.graphQLErrors);
+        }
+        // localStorage.setItem('chatty', res.data.token);      
+        console.log(res.data.signup.token);
       })
-      .then(()=> this.props.data.refetch())
+      // .then(()=> this.props.data.refetch())
+      console.log('--signup', signup);
+
   }
 
   renderButtons() {
     const { loading, user } = this.props.data;
+    console.log(this.props);
 
     if (loading) { return <div />; }
 
