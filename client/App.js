@@ -32,14 +32,32 @@ const networkInterface = createNetworkInterface({
 	},
 });
 
-const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { 
-  reconnect: true
+const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', {
+	reconnect: true
 })
 
 const networkInterfaceWithSubs = addGraphQLSubscriptions(
 	networkInterface,
 	wsClient
 );
+
+networkInterface.use([{
+	async applyMiddleware(req, next) {
+		if (!req.options.headers) {
+			req.options.headers = {};
+		}
+		try {
+			const token = await localStorage.getItem('chatty');
+			if (token != null) {
+				req.options.headers.authorization = `Bearer ${token}` || null;
+			}
+		} catch (error) {
+			throw error;
+		}
+
+		return next();
+	}
+}])
 
 const client = new ApolloClient({
 	dataIdFromObject: o => o.id,

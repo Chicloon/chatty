@@ -19,32 +19,38 @@ class HeaderComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state={errors: []}
-  }  
+    this.state = { errors: [] }
+  }
 
-  onLogoutClick = ()=> {
+  onLogoutClick = () => {
     this.props.logoutMutation({
       refetchQueries: [{ query }],
     });
-    this.setState({errors: []});
+    this.setState({ errors: [] });
   }
 
-  handleLogin =({username, password})=> {
+  handleLogin = ({ username, password }) => {
     this.props.loginMutation({
       variables: { username, password },
       refetchQueries: [{ query }]
     })
-      .catch(res=> {
+      // .then(localStorage.setItem('chatty', data.signup.token);
+      .catch(res => {
         const errors = res.graphQLErrors.map(error => error.message);
-        this.setState ({errors });
+        this.setState({ errors });
       });
   }
 
-  handleSignup = ({username, password}) => {
+  handleSignup = ({ username, password }) => {
     this.props.signupMutation({
       variables: { username, password },
-      refetchQueries: [{ query }]
+      // refetchQueries: [{ query }]
     })
+      .then(res => {
+        console.log(res);
+        localStorage.setItem('chatty', res.data.token);      
+      })
+      .then(()=> this.props.data.refetch())
   }
 
   renderButtons() {
@@ -59,11 +65,11 @@ class HeaderComponent extends Component {
     }
     return (
       <div>
-        <Popover placement="bottomLeft" content={<LoginForm onSubmit={this.handleLogin} errors = {this.state.errors} />} title="Login" trigger="click" >
+        <Popover placement="bottomLeft" content={<LoginForm onSubmit={this.handleLogin} errors={this.state.errors} />} title="Login" trigger="click" >
           <Button>Login</Button>
         </Popover>
 
-        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup}  />} title="Signup" trigger="click">
+        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup} errors={this.state.errors} />} title="Signup" trigger="click">
           <Button>Signup</Button>
         </Popover>
       </div>
@@ -71,7 +77,8 @@ class HeaderComponent extends Component {
 
   }
 
-  render() {    
+  render() {
+    console.log(this.props)
     return (
       <div style={{ padding: '24px' }}>
         {this.renderButtons()}
@@ -91,9 +98,9 @@ class HeaderComponent extends Component {
 
 export default compose(
   graphql(query),
-  graphql(logout, {name: 'logoutMutation'}),
-  graphql(login, {name: 'loginMutation'}),
-  graphql(signup, {name: 'signupMutation'})
+  graphql(logout, { name: 'logoutMutation' }),
+  graphql(login, { name: 'loginMutation' }),
+  graphql(signup, { name: 'signupMutation' })
 )(HeaderComponent);
 
 

@@ -12,7 +12,7 @@ export default {
 
       return me;
     } catch (error) {
-      throw error;
+      console.log( error);
     }
   },
   users: (_, args, req) => {
@@ -21,7 +21,7 @@ export default {
   // mutations
   signup: async (_, { username, password }) => {
     try {      
-      const user = await User.create({ firstName, password });
+      const user = await User.create({ username, password });
 
       return {
         token: user.createToken(),

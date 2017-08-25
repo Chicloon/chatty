@@ -4,6 +4,8 @@ import constants from '../config/constants';
 import User from '../models/User';
 
 export async function requireAuth(user) {
+  
+  // console.log(user);
   if (!user || !user._id) {
     throw new Error('Unauthorized!');
   }

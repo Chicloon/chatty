@@ -1,6 +1,10 @@
 export default `
   scalar Date
 
+  type Auth {
+    token: String
+  }
+
   type Member {    
     user: User
     access: Int
@@ -29,16 +33,16 @@ export default `
   }
 
   type Query {
-    user(userId: ID): User
+    user: User
     users: [User]
     chat(id: ID): Chat
     chats: [Chat]    
   }
 
   type Mutation {
-    login (username: String!, password: String!): User
-    logout: User
-    signup (username: String!, password: String!): User 
+    login (username: String!, password: String!): Auth
+    #logout: User
+    signup (username: String!, password: String!): Auth 
     addMessage(chatId: ID!, content: String): Message
     createChat(name: String): Chat
     addUserToChat(userId: ID, chatId: ID, access: Int): Member    

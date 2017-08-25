@@ -16,7 +16,7 @@ export default {
   Mutation: {    
     signup: UserResolvers.signup,
     login: UserResolvers.login,
-    logout: UserResolvers.logout,
+    // logout: UserResolvers.logout,
     createChat: ChatResolvers.createChat,
     addUserToChat: ChatResolvers.addUser,
     addMessage: ChatResolvers.addMessage,

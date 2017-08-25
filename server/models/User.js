@@ -1,5 +1,8 @@
 import { hashSync, compareSync }  from 'bcrypt-nodejs';
 import mongoose, { Schema } from 'mongoose';
+import jwt from 'jsonwebtoken';
+
+import constants from '../config/constants';
 
 import Message from './Message';
 import Chat from './Chat';
