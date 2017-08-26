@@ -24,7 +24,7 @@ class HeaderComponent extends Component {
 
   onLogoutClick = () => {
     localStorage.removeItem('chatty');
-    // this.setState({ errors: [] });
+    this.setState({ errors: [] });
     this.props.data.refetch();
   }
 

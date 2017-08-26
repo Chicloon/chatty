@@ -21,6 +21,9 @@ export default {
     addUserToChat: ChatResolvers.addUser,
     addMessage: ChatResolvers.addMessage,
   },  
+  Subscription:{
+    messageAdded: ChatResolvers.messageAdded,
+  },
   Chat: {
     messages: ChatResolvers.messagesField,
   },
@@ -35,7 +38,4 @@ export default {
     chats: UserResolvers.chatsField,
     messages: UserResolvers.messagesField,
   },
-  Subscription:{
-    messageAdded: ChatResolvers.messageAdded,
-  }
 }

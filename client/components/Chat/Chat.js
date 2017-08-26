@@ -8,7 +8,7 @@ import moment from 'moment';
 moment.locale('ru');
 
 import ChatMessages from '../../queries/ChatMessages';
-import CurrentUser from '../../queries/CurrentUser';
+// import CurrentUser from '../../queries/CurrentUser';
 import mutation from '../../mutations/SendMessage';
 
 import messageAdded from '../../subscriptions/messageAdded';
@@ -27,8 +27,7 @@ class Chat extends Component {
     }
 
     componentWillMount() {
-        // console.log(this.props);
-        this.props.chatData.subscribeToMore({
+        this.props.data.subscribeToMore({
             document: messageAdded,
             updateQuery: (prev, { subscriptionData }) => {
                 // if (!subscriptionData.data) {
@@ -44,7 +43,7 @@ class Chat extends Component {
     }
 
     componentDidUpdate() {
-        if (!this.props.chatData.loading) {
+        if (!this.props.data.loading) {
             this.scrollToBottom();
         }
     }
@@ -95,12 +94,12 @@ class Chat extends Component {
     render() {
         console.log('---Chat props', this.props);
 
-        if (this.props.chatData.loading) {
+        if (this.props.data.loading) {
             return <div> ....loading </div>
         }
-        const messages = this.props.chatData.chat.messages;
-        const chatName = this.props.chatData.chat.name;
-        this.user = this.props.userData.user;
+        const messages = this.props.data.chat.messages;
+        const chatName = this.props.data.chat.name;
+        // this.user = this.props.userData.user;
         return (
             <div
                 style={{
@@ -147,13 +146,12 @@ const groupQuery = graphql(ChatMessages, {
         variables: {
             id: props.match.params.chat,
         },
-    }),
-    name: 'chatData'
+    })
 });
 
-const userQuery = graphql(CurrentUser, { name: 'userData' });
+// const userQuery = graphql(CurrentUser, { name: 'userData' });
 
 export default compose(groupQuery, 
-    userQuery, 
+    // userQuery, 
     messageMutation)(Chat);
 

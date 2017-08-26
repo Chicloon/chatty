@@ -19,7 +19,7 @@ export default {
   // mutations
   addMessage: async (_, {chatId, content}, req) => {
     const { user } = req;
-    const message = await Chat.addMessage(chatId, user._id, content);
+    const message = await Chat.addMessage(chatId, user.id, content);
 
     pubsub.publish(MESSAGE_ADDED, {[MESSAGE_ADDED]: message});
 
@@ -30,7 +30,8 @@ export default {
   },
   createChat: (_, {name}, req) => {
     const { user } = req;
-    return Chat.createChat(name, user)
+    console.log("user", req, user);
+    return Chat.createChat(name, user.id)
   },
   // Field resolvers
   messagesField: (parentValue, args) => {
