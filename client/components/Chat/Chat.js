@@ -28,7 +28,7 @@ class Chat extends Component {
 
     componentWillMount() {
         this.props.data.subscribeToMore({
-            document: messageAdded,
+            document: ChatMessages,
             updateQuery: (prev, { subscriptionData }) => {
                 // if (!subscriptionData.data) {
                 //     return prev;
