@@ -31,13 +31,36 @@ class Chat extends Component {
         this.props.chatData.subscribeToMore({
             document: messageAdded,
             updateQuery: (prev, { subscriptionData }) => {
-                // if (!subscriptionData.data) {
-                //     return prev;
-                // }               
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                const newMessage = subscriptionData.data.messageAdded;
+
+                const newPrev = prev;
+                console.log(newPrev.chat.messages);
+                console.log(newMessage);
                 
-                console.log('got message on client', subscriptionData);
-                console.log(prev);
-                return prev
+                // newPrev.chat.messages.push(newMessage);
+                console.log(newPrev);
+                console.log('prev', prev)
+                const res = {
+                    ...prev,
+                    chat: {
+                        ...prev.chat,
+                        // id: prev.chat.id,                      
+                        messages: [newMessage, ...prev.chat.messages],
+                        // name: 'asdfasdf',
+
+                    },
+                    // ...prev
+                    // chat: [{ ...newMessage }, ...prev.chat]
+                };
+                console.log('res is',res)
+                return res
+                console.log('subscriptionData', subscriptionData);
+                console.log('prev', prev);
+                // return prev
             }
 
         })
@@ -116,7 +139,7 @@ class Chat extends Component {
                     }}
 
                         style={{
-                            height: '95%',
+                            height: '94%',
                             overflowX: 'hidden',
                             overflowY: 'scroll'
                         }} >
@@ -153,7 +176,7 @@ const groupQuery = graphql(ChatMessages, {
 
 const userQuery = graphql(CurrentUser, { name: 'userData' });
 
-export default compose(groupQuery, 
-    userQuery, 
+export default compose(groupQuery,
+    userQuery,
     messageMutation)(Chat);
 

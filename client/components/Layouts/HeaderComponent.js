@@ -45,6 +45,10 @@ class HeaderComponent extends Component {
       variables: { username, password },
       refetchQueries: [{ query }]
     })
+    .catch(res=> {
+      const errors = res.graphQLErrors.map(error => error.message);
+      this.setState ({errors });
+    });
   }
 
   renderButtons() {
@@ -63,7 +67,7 @@ class HeaderComponent extends Component {
           <Button>Login</Button>
         </Popover>
 
-        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup}  />} title="Signup" trigger="click">
+        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup}  errors = {this.state.errors}/>} title="Signup" trigger="click">
           <Button>Signup</Button>
         </Popover>
       </div>
