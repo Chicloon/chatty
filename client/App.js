@@ -67,7 +67,7 @@ class App extends Component {
 		return (
 			<ApolloProvider client={client}>
 				<Router>
-					{/* <Provider {...stores}> */}
+					<Provider {...stores}>
 						<LocaleProvider locale={ruRU}>
 							<MainLayout >
 								<Switch>
@@ -78,7 +78,7 @@ class App extends Component {
 								</Switch>
 							</MainLayout>
 						</LocaleProvider>
-					{/* </Provider> */}
+					</Provider>
 				</Router>
 			</ ApolloProvider>
 		);
