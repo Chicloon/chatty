@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { graphql, compose } from 'react-apollo';
-
+import _ from 'lodash';
 import { Button, Row } from 'antd';
 
 import moment from 'moment';
@@ -49,7 +49,7 @@ class Chat extends Component {
                     chat: {
                         ...prev.chat,
                         // id: prev.chat.id,                      
-                        messages: [newMessage, ...prev.chat.messages],
+                        messages: _.sortBy([newMessage, ...prev.chat.messages],'createdAt'),
                         // name: 'asdfasdf',
 
                     },
@@ -95,12 +95,12 @@ class Chat extends Component {
                 //     }
 
                 // },
-                refetchQueries: [{
-                    query: ChatMessages,
-                    variables: {
-                        id: this.chatId,
-                    },
-                }],
+                // refetchQueries: [{
+                //     query: ChatMessages,
+                //     variables: {
+                //         id: this.chatId,
+                //     },
+                // }],
             })
                 .then(event.target.value = '')
         }
