@@ -1,21 +1,15 @@
 import {gql} from 'react-apollo';
 
 export default gql`
-query getMessages($id: ID) {
-  chat(id: $id) {
+query getMessages($id: ID!) {
+  messages(chatId: $id) {
     id
-    name
-    messages {
+    user {
       id
-      user {
-        id
-        username
-      }
-      content
-      createdAt
+      username
     }
+    content
+    createdAt
   }
 }
-
-
 `;

@@ -10,8 +10,7 @@ import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
 import ruRU from 'antd/lib/locale-provider/ru_RU';
 // Apollo for gql
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, ApolloClient, createNetworkInterface } from 'react-apollo';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 //Stores
@@ -36,10 +35,7 @@ const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', {
 	reconnect: true
 })
 
-const networkInterfaceWithSubs = addGraphQLSubscriptions(
-	networkInterface,
-	wsClient
-);
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
 
 networkInterface.use([{
 	async applyMiddleware(req, next) {
@@ -61,7 +57,7 @@ networkInterface.use([{
 
 const client = new ApolloClient({
 	dataIdFromObject: o => o.id,
-	networkInterface: networkInterfaceWithSubs
+	networkInterface: networkInterfaceWithSubscriptions,
 });
 
 
@@ -71,7 +67,7 @@ class App extends Component {
 		return (
 			<ApolloProvider client={client}>
 				<Router>
-					<Provider {...stores}>
+					{/* <Provider {...stores}> */}
 						<LocaleProvider locale={ruRU}>
 							<MainLayout >
 								<Switch>
@@ -82,7 +78,7 @@ class App extends Component {
 								</Switch>
 							</MainLayout>
 						</LocaleProvider>
-					</Provider>
+					{/* </Provider> */}
 				</Router>
 			</ ApolloProvider>
 		);

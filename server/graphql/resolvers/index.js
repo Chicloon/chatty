@@ -11,7 +11,8 @@ export default {
     user: UserResolvers.user,    
     users: UserResolvers.users,
     chat: ChatResolvers.chat,
-    chats: ChatResolvers.chats,        
+    chats: ChatResolvers.chats,    
+    messages: MessageRsolvers.messages,       
   },
   Mutation: {    
     signup: UserResolvers.signup,

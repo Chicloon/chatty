@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import _ from 'lodash';
 import { inject, observer } from "mobx-react";
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo';
 
 import { Button, Row } from 'antd';
 
@@ -8,7 +9,7 @@ import moment from 'moment';
 moment.locale('ru');
 
 import ChatMessages from '../../queries/ChatMessages';
-// import CurrentUser from '../../queries/CurrentUser';
+import chatName from '../../queries/ChatName';
 import mutation from '../../mutations/SendMessage';
 
 import messageAdded from '../../subscriptions/messageAdded';
@@ -23,27 +24,30 @@ class Chat extends Component {
         super(props);
         this.store = this.props.appState;
         this.chatId = this.props.match.params.chat;
-        this.user = '';
     }
 
     componentWillMount() {
-        this.props.data.subscribeToMore({
-            document: ChatMessages,
+        // console.log(this.props);
+        this.props.messages.subscribeToMore({
+            document: messageAdded,
             updateQuery: (prev, { subscriptionData }) => {
-                // if (!subscriptionData.data) {
-                //     return prev;
-                // }               
-                
-                console.log('got message on client', subscriptionData);
-                console.log(prev);
-                return prev
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                const newMessage = subscriptionData.data.messageAdded;
+
+                return {
+                    ...prev,
+                    messages: _.sortBy([{ ...newMessage }, ...prev.messages], 'createdAt')
+                }
             }
 
         })
     }
 
     componentDidUpdate() {
-        if (!this.props.data.loading) {
+        if (!this.props.messages.loading) {
             this.scrollToBottom();
         }
     }
@@ -71,12 +75,12 @@ class Chat extends Component {
                 //     }
 
                 // },
-                refetchQueries: [{
-                    query: ChatMessages,
-                    variables: {
-                        id: this.chatId,
-                    },
-                }],
+                // refetchQueries: [{
+                //     query: ChatMessages,
+                //     variables: {
+                //         id: this.chatId,
+                //     },
+                // }],
             })
                 .then(event.target.value = '')
         }
@@ -94,12 +98,12 @@ class Chat extends Component {
     render() {
         console.log('---Chat props', this.props);
 
-        if (this.props.data.loading) {
+        if (this.props.chatData.loading || this.props.messages.loading) {
             return <div> ....loading </div>
         }
-        const messages = this.props.data.chat.messages;
-        const chatName = this.props.data.chat.name;
-        // this.user = this.props.userData.user;
+        const messages = this.props.messages.messages;
+        const chatName = this.props.chatData.chat.name;
+        console.log(moment("2017-08-28T04:51:59.242Z").format("HH:mm:ss"));
         return (
             <div
                 style={{
@@ -119,7 +123,7 @@ class Chat extends Component {
                             overflowX: 'hidden',
                             overflowY: 'scroll'
                         }} >
-                        {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt={moment(message.createdAt).format("HH:mm")} />
+                        {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt={moment(message.createdAt).format("HH:mm:ss")} />
                         )}
                         <p> chat's ID {this.chatId} </p>
                     </div>
@@ -132,26 +136,28 @@ class Chat extends Component {
                     {/* <SendMessageForm onSubmit={this.submitMessage}/>                     */}
                     <input autoFocus onKeyPress={this.submitMessage} style={{ width: '100%' }} />
                 </div>
-
             </div>
         );
     }
 }
-
 const messageMutation = graphql(mutation);
 // const messageSubscription = graphql(MessageAdded);
-
 const groupQuery = graphql(ChatMessages, {
     options: props => ({
         variables: {
             id: props.match.params.chat,
         },
-    })
+    }),
+    name: 'messages'
 });
-
-// const userQuery = graphql(CurrentUser, { name: 'userData' });
-
-export default compose(groupQuery, 
-    // userQuery, 
+const chatQuery = graphql(chatName, {
+    options: props => ({
+        variables: {
+            id: props.match.params.chat,
+        },
+    }),
+    name: 'chatData'
+});
+export default compose(groupQuery,
+    chatQuery,
     messageMutation)(Chat);
-

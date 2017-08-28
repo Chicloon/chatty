@@ -36,7 +36,8 @@ export default `
     user: User
     users: [User]
     chat(id: ID): Chat
-    chats: [Chat]    
+    chats: [Chat]
+    messages(chatId: ID!): [Message]
   }
 
   type Mutation {
