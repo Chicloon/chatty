@@ -32,6 +32,13 @@ export default {
     const { user } = req;
     return Chat.createChat(name, user)
   },
+  deleteChat: async (_, {chatId}, req) => {
+    const { user } = req;
+    if(!user.isAdmin) {throw new Error('Permission denied'); }
+    const chat = await Chat.findOne({_id: chatId});
+    Chat.remove({_id: chatId},  function (err) {if(err) console.log(err)});       
+    return chat;
+  },
   // Field resolvers
   messagesField: (parentValue, args) => {
     return Chat.findById(parentValue.id)

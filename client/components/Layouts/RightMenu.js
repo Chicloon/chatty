@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import { Menu, Icon, Button } from 'antd';
 const { Item } = Menu;
 
-import query from '../../queries/Chats';
+import {Chats} from '../../queries/chatQueries';
 
 class RightMenu extends Component {
   constructor(props) {
@@ -23,9 +23,6 @@ class RightMenu extends Component {
   }
 }
 
-const menuQuery = graphql(query);
+const menuQuery = graphql(Chats);
 
 export default compose(menuQuery)(RightMenu);
-
-
-// export default MainMenu;

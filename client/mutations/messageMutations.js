@@ -1,6 +1,6 @@
 import {gql} from 'react-apollo';
 
-export default gql`
+export const SendMessage = gql`
 mutation addMessage($chatId: ID!, $content: String) {
   addMessage(chatId: $chatId, content: $content) {
     id

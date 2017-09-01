@@ -10,6 +10,7 @@ import Chat from './Chat';
 const UserSchema = new Schema({
   username: String,
   password: String,
+  isAdmin: Boolean,
   chats: [{
     type: Schema.Types.ObjectId,
     ref: 'chat'

@@ -29,12 +29,17 @@ ChatSchema.statics.createChat = function (name, user) {
   if (!user) {
     throw new Error('Need to be loggedin')
   }
-
-  return new Chat({ name, members: {user, access: 10 }}).save()
+  return Chat.findOne({name})
     .then(chat => {
-      console.log(chat);
-      return chat
-    });
+      console.log('chat in DB', chat);
+      if (chat)  { throw new Error('Chat with this name already exists'); }
+      return new Chat({ name, members: {user, access: 10 }}).save()
+        .then(chat => {
+          console.log(chat);
+          return chat
+        });
+    })
+
 
 }
 

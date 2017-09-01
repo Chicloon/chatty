@@ -49,12 +49,13 @@ passport.use(new LocalStrategy({ usernameField: 'username' }, (username, passwor
 // Notice the Promise created in the second 'then' statement.  This is done
 // because Passport only supports callbacks, while GraphQL only supports promises
 // for async code!  Awkward!
-function signup({ username, password, req }) {
-  const user = new User({ username, password });
+function signup({ username, password, isAdmin, req }) {
+  const user = new User({ username, password, isAdmin });
   if (!username || !password) { throw new Error('You must provide an username and password.'); }
   return User.findOne({ username })
     .then(existingUser => {
       if (existingUser) { throw new Error('Username in use'); }
+      console.log(user);
       return user.save();
     })
     .then(user => {

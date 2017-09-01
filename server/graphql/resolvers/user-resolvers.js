@@ -20,8 +20,8 @@ export default {
     req.logout();
     return user;
   },
-  signup: (_, { username, password }, req) => {
-    return AuthService.signup({ username, password, req });
+  signup: (_, { username, password, isAdmin }, req) => {
+    return AuthService.signup({ username, password, isAdmin, req });
   },
   // Fields resolvers
   chatsField: (parentValue, args) => {

@@ -7,62 +7,40 @@ import { Button, Row } from 'antd';
 import moment from 'moment';
 moment.locale('ru');
 
-import ChatMessages from '../../queries/ChatMessages';
-import CurrentUser from '../../queries/CurrentUser';
-import mutation from '../../mutations/SendMessage';
+import {ChatMessages} from '../../queries/chatQueries';
+
+import {SendMessage} from '../../mutations/messageMutations';
 
 import messageAdded from '../../subscriptions/messageAdded';
 
 import Message from './Message';
-import SendMessageForm from './SendMessageForm';
-
-
+// import SendMessageForm from './SendMessageForm';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.store = this.props.appState;
-        this.chatId = this.props.match.params.chat;
-        this.user = '';
+        this.chatId = this.props.match.params.chat;        
     }
 
     componentWillMount() {
-        // console.log(this.props);
+        
         this.props.chatData.subscribeToMore({
             document: messageAdded,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) {
                     return prev;
                 }
-
                 const newMessage = subscriptionData.data.messageAdded;
-
-                const newPrev = prev;
-                console.log(newPrev.chat.messages);
-                console.log(newMessage);
-                
-                // newPrev.chat.messages.push(newMessage);
-                console.log(newPrev);
-                console.log('prev', prev)
                 const res = {
                     ...prev,
                     chat: {
-                        ...prev.chat,
-                        // id: prev.chat.id,                      
+                        ...prev.chat,                
                         messages: _.sortBy([newMessage, ...prev.chat.messages],'createdAt'),
-                        // name: 'asdfasdf',
-
                     },
-                    // ...prev
-                    // chat: [{ ...newMessage }, ...prev.chat]
-                };
-                console.log('res is',res)
+                };                
                 return res
-                console.log('subscriptionData', subscriptionData);
-                console.log('prev', prev);
-                // return prev
             }
-
         })
     }
 
@@ -80,27 +58,7 @@ class Chat extends Component {
                 variables: {
                     chatId: this.chatId,
                     content,
-                },
-                // optimisticResponse: {
-                //     __typename: 'Mutation',
-                //     addMessage: {
-                //         __typename: 'MessageType',
-                //         content,
-                //         id: -1,
-                //         user: {
-                //             __typename: 'UserType',
-                //             id: this.user.id,
-                //             username: this.user.username
-                //         }
-                //     }
-
-                // },
-                // refetchQueries: [{
-                //     query: ChatMessages,
-                //     variables: {
-                //         id: this.chatId,
-                //     },
-                // }],
+                }              
             })
                 .then(event.target.value = '')
         }
@@ -116,14 +74,14 @@ class Chat extends Component {
 
 
     render() {
-        console.log('---Chat props', this.props);
+        // console.log('---Chat props', this.props);
 
         if (this.props.chatData.loading) {
             return <div> ....loading </div>
         }
         const messages = this.props.chatData.chat.messages;
         const chatName = this.props.chatData.chat.name;
-        this.user = this.props.userData.user;
+        // this.user = this.props.userData.user;
         return (
             <div
                 style={{
@@ -162,7 +120,7 @@ class Chat extends Component {
     }
 }
 
-const messageMutation = graphql(mutation);
+const messageMutation = graphql(SendMessage);
 // const messageSubscription = graphql(MessageAdded);
 
 const groupQuery = graphql(ChatMessages, {
@@ -174,9 +132,9 @@ const groupQuery = graphql(ChatMessages, {
     name: 'chatData'
 });
 
-const userQuery = graphql(CurrentUser, { name: 'userData' });
+// const userQuery = graphql(CurrentUser, { name: 'userData' });
 
 export default compose(groupQuery,
-    userQuery,
+    // userQuery,
     messageMutation)(Chat);
 

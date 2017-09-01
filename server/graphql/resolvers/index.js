@@ -18,8 +18,10 @@ export default {
     login: UserResolvers.login,
     logout: UserResolvers.logout,
     createChat: ChatResolvers.createChat,
+    deleteChat: ChatResolvers.deleteChat,
     addUserToChat: ChatResolvers.addUser,
     addMessage: ChatResolvers.addMessage,
+
   },  
   Chat: {
     messages: ChatResolvers.messagesField,
