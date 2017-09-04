@@ -50,7 +50,7 @@ class LeftMenu extends Component {
           <Popover
             placement="rightTop"
             title={<h3 style={{ textAlign: 'center' }}>Create new chat</h3>}
-            trigger="click"
+            trigger="hover"
             content={<CreateChatForm
               onSubmit={this.createChat}
               errors={this.state.errors} />}

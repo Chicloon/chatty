@@ -10,7 +10,8 @@ export default {
   chat: (parentValue, {id}) => {
     return Chat.findById(id)
   },
-  chats: (_, args) => {
+  chats: (_, args, req) => {
+    // console.log(req.session);
     return Chat.find({})
     .populate('members')
     .then(chat=> chat)

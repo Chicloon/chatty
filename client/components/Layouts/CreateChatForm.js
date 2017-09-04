@@ -19,9 +19,10 @@ class NormalForm extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem style={{ minHeight: '0' }}>
           {getFieldDecorator('chatName', {
+            initialValue:'' ,
             rules: [{ required: true, message: 'Please input chat name!' }],
           })(
-            <Input autoFocus prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Chat Name" />
+            <Input autoComplete='off' autoFocus prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Chat Name" />
             )}
         </FormItem>
 

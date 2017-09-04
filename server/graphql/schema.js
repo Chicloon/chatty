@@ -24,6 +24,7 @@ export default `
   type User {
     id: ID!
     username: String
+    isAdmin: Boolean
     messages: [Message]    
     chats: [Chat]
   }

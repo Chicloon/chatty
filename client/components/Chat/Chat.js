@@ -32,11 +32,12 @@ class Chat extends Component {
                     return prev;
                 }
                 const newMessage = subscriptionData.data.messageAdded;
+                const messages = prev.chat.messages ? _.sortBy([newMessage, ...prev.chat.messages],'createdAt') : newMessage;
                 const res = {
                     ...prev,
                     chat: {
                         ...prev.chat,                
-                        messages: _.sortBy([newMessage, ...prev.chat.messages],'createdAt'),
+                        messages,
                     },
                 };                
                 return res

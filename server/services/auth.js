@@ -73,7 +73,7 @@ function signup({ username, password, isAdmin, req }) {
 // function returns a function, as its indended to be used as a middleware with
 // Express.  We have another compatibility layer here to make it work nicely with
 // GraphQL, as GraphQL always expects to see a promise for handling async code.
-function login({ username, password, req }) {  
+function login({ username, password, req }) {    
   return new Promise((resolve, reject) => {
     passport.authenticate('local', (err, user) => {
       if (!user) { reject('Invalid credentials.') }
