@@ -1,53 +1,52 @@
 import React, { Component } from "react";
-import _ from 'lodash';
 import { inject, observer } from "mobx-react";
-import { graphql, compose, withApollo } from 'react-apollo';
-
+import { graphql, compose } from 'react-apollo';
+import _ from 'lodash';
 import { Button, Row } from 'antd';
 
 import moment from 'moment';
 moment.locale('ru');
 
-import ChatMessages from '../../queries/ChatMessages';
-import chatName from '../../queries/ChatName';
-import mutation from '../../mutations/SendMessage';
+import {ChatMessages} from '../../queries/chatQueries';
+
+import {SendMessage} from '../../mutations/messageMutations';
 
 import messageAdded from '../../subscriptions/messageAdded';
 
 import Message from './Message';
-import SendMessageForm from './SendMessageForm';
-
-
+// import SendMessageForm from './SendMessageForm';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.store = this.props.appState;
-        this.chatId = this.props.match.params.chat;
+        this.chatId = this.props.match.params.chat;        
     }
 
     componentWillMount() {
-        // console.log(this.props);
-        this.props.messages.subscribeToMore({
+        
+        this.props.chatData.subscribeToMore({
             document: messageAdded,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) {
                     return prev;
                 }
-
                 const newMessage = subscriptionData.data.messageAdded;
-
-                return {
+                const messages = prev.chat.messages ? _.sortBy([newMessage, ...prev.chat.messages],'createdAt') : newMessage;
+                const res = {
                     ...prev,
-                    messages: _.sortBy([{ ...newMessage }, ...prev.messages], 'createdAt')
-                }
+                    chat: {
+                        ...prev.chat,                
+                        messages,
+                    },
+                };                
+                return res
             }
-
         })
     }
 
     componentDidUpdate() {
-        if (!this.props.messages.loading) {
+        if (!this.props.chatData.loading) {
             this.scrollToBottom();
         }
     }
@@ -60,27 +59,7 @@ class Chat extends Component {
                 variables: {
                     chatId: this.chatId,
                     content,
-                },
-                // optimisticResponse: {
-                //     __typename: 'Mutation',
-                //     addMessage: {
-                //         __typename: 'MessageType',
-                //         content,
-                //         id: -1,
-                //         user: {
-                //             __typename: 'UserType',
-                //             id: this.user.id,
-                //             username: this.user.username
-                //         }
-                //     }
-
-                // },
-                // refetchQueries: [{
-                //     query: ChatMessages,
-                //     variables: {
-                //         id: this.chatId,
-                //     },
-                // }],
+                }              
             })
                 .then(event.target.value = '')
         }
@@ -96,14 +75,14 @@ class Chat extends Component {
 
 
     render() {
-        console.log('---Chat props', this.props);
+        // console.log('---Chat props', this.props);
 
-        if (this.props.chatData.loading || this.props.messages.loading) {
+        if (this.props.chatData.loading) {
             return <div> ....loading </div>
         }
-        const messages = this.props.messages.messages;
+        const messages = this.props.chatData.chat.messages;
         const chatName = this.props.chatData.chat.name;
-        console.log(moment("2017-08-28T04:51:59.242Z").format("HH:mm:ss"));
+        // this.user = this.props.userData.user;
         return (
             <div
                 style={{
@@ -119,11 +98,11 @@ class Chat extends Component {
                     }}
 
                         style={{
-                            height: '95%',
+                            height: '94%',
                             overflowX: 'hidden',
                             overflowY: 'scroll'
                         }} >
-                        {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt={moment(message.createdAt).format("HH:mm:ss")} />
+                        {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt={moment(message.createdAt).format("HH:mm")} />
                         )}
                         <p> chat's ID {this.chatId} </p>
                     </div>
@@ -136,21 +115,16 @@ class Chat extends Component {
                     {/* <SendMessageForm onSubmit={this.submitMessage}/>                     */}
                     <input autoFocus onKeyPress={this.submitMessage} style={{ width: '100%' }} />
                 </div>
+
             </div>
         );
     }
 }
-const messageMutation = graphql(mutation);
+
+const messageMutation = graphql(SendMessage);
 // const messageSubscription = graphql(MessageAdded);
+
 const groupQuery = graphql(ChatMessages, {
-    options: props => ({
-        variables: {
-            id: props.match.params.chat,
-        },
-    }),
-    name: 'messages'
-});
-const chatQuery = graphql(chatName, {
     options: props => ({
         variables: {
             id: props.match.params.chat,
@@ -158,6 +132,10 @@ const chatQuery = graphql(chatName, {
     }),
     name: 'chatData'
 });
+
+// const userQuery = graphql(CurrentUser, { name: 'userData' });
+
 export default compose(groupQuery,
-    chatQuery,
+    // userQuery,
     messageMutation)(Chat);
+

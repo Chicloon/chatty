@@ -5,7 +5,7 @@ import DevTools from "mobx-react-devtools";
 import { graphql, compose } from 'react-apollo';
 
 import query from '../../queries/CurrentUser';
-import mutation from '../../mutations/Logout';
+// import mutation from '../../mutations/Logout';
 
 import { Layout, Row } from 'antd';
 const { Sider, Content } = Layout;

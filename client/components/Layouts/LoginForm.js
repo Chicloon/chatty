@@ -13,7 +13,7 @@ class NormalLoginForm extends Component {
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form;    
     return (     
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem style={{minHeight: '0'}}>

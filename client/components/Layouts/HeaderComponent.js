@@ -9,9 +9,9 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
 import query from '../../queries/CurrentUser';
-import logout from '../../mutations/Logout';
-import login from '../../mutations/Login';
-import signup from '../../mutations/Signup';
+import {Logout} from '../../mutations/userMutations';
+import {Login} from '../../mutations/userMutations';
+import {Signup} from '../../mutations/userMutations';
 
 
 class HeaderComponent extends Component {
@@ -19,53 +19,42 @@ class HeaderComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { errors: [] }
+    this.state={errors: []}
+  }  
+
+  onLogoutClick = ()=> {
+    this.props.logoutMutation({
+      refetchQueries: [{ query }],
+    });
+    this.setState({errors: []});
   }
 
-  onLogoutClick = () => {
-    localStorage.removeItem('chatty');
-    this.setState({ errors: [] });
-    this.props.data.refetch();
-  }
-
-  handleLogin = ({ username, password }) => {
+  handleLogin =({username, password})=> {
     this.props.loginMutation({
       variables: { username, password },
-      // refetchQueries: [{ query }]
+      refetchQueries: [{ query }]
     })
-      .then(res => {
-        localStorage.setItem('chatty', res.data.login.token);
-        console.log(res.data.login.token);
-      })
-      .then(() => this.props.data.refetch())
-      // .then(localStorage.setItem('chatty', data.signup.token);
-      .catch(res => {
+      .catch(res=> {
         const errors = res.graphQLErrors.map(error => error.message);
-        this.setState({ errors });
+        this.setState ({errors });
       });
+      this.setState({errors: []});
   }
 
-  handleSignup = async ({ username, password }) => {
-    const signup = await this.props.signupMutation({
-      variables: { username, password },
-      // refetchQueries: [{ query }]
+  handleSignup = ({username, password, isAdmin}) => {
+    this.props.signupMutation({
+      variables: { username, password, isAdmin},
+      refetchQueries: [{ query }]
     })
-      .then(res => {
-        localStorage.setItem('chatty', res.data.signup.token);
-        console.log(res.data.signup.token);
-      })
-      .then(() => this.props.data.refetch())
-      .catch(res => {
-        const errors = res.graphQLErrors.map(error => error.message);
-        this.setState({ errors });
-      })
-
-
+    .catch(res=> {
+      const errors = res.graphQLErrors.map(error => error.message);
+      this.setState ({errors });
+    });
+    this.setState({errors: []});
   }
 
   renderButtons() {
     const { loading, user } = this.props.data;
-    console.log(this.props);
 
     if (loading) { return <div />; }
 
@@ -76,11 +65,25 @@ class HeaderComponent extends Component {
     }
     return (
       <div>
-        <Popover placement="bottomLeft" content={<LoginForm onSubmit={this.handleLogin} errors={this.state.errors} />} title="Login" trigger="click" >
+        <Popover 
+          placement="bottomLeft" 
+          title={<h3 style={{textAlign: 'center'}}>Login</h3>} 
+          trigger="click" 
+          content={<LoginForm 
+            onSubmit={this.handleLogin} 
+            errors = {this.state.errors} />} 
+          >
           <Button>Login</Button>
         </Popover>
 
-        <Popover placement="bottomRight" content={<SignupForm onSubmit={this.handleSignup} errors={this.state.errors} />} title="Signup" trigger="click">
+        <Popover 
+          placement="bottomRight" 
+          title={<h3 style={{textAlign: 'center'}}>Signup</h3>} 
+          trigger="click"
+          content={<SignupForm 
+            onSubmit={this.handleSignup}  
+            errors = {this.state.errors}/>} 
+          >
           <Button>Signup</Button>
         </Popover>
       </div>
@@ -88,8 +91,7 @@ class HeaderComponent extends Component {
 
   }
 
-  render() {
-    console.log(this.props)
+  render() {    
     return (
       <div style={{ padding: '24px' }}>
         {this.renderButtons()}
@@ -98,24 +100,9 @@ class HeaderComponent extends Component {
   }
 }
 
-// const groupQuery = graphql(query, {
-//     options: props => ({
-//         variables: {
-//             groupId: props.match.params.chat,
-//         },
-//     })
-// });
-
-
 export default compose(
   graphql(query),
-  graphql(logout, { name: 'logoutMutation' }),
-  graphql(login, { name: 'loginMutation' }),
-  graphql(signup, { name: 'signupMutation' })
+  graphql(Logout, {name: 'logoutMutation'}),
+  graphql(Login, {name: 'loginMutation'}),
+  graphql(Signup, {name: 'signupMutation'})
 )(HeaderComponent);
-
-
-
-// export default graphql(logout)(
-//   graphql(query)(HeaderComponent)
-// );

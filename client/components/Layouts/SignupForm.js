@@ -7,6 +7,7 @@ class NormalLoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      console.log(values);
       if (!err) {
         this.props.onSubmit(values);
       }
@@ -29,12 +30,17 @@ class NormalLoginForm extends Component {
           })(
             <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
             )}
-        </FormItem>
+        </FormItem>        
         {(this.props.errors !== []) ?
           <FormItem> {this.props.errors.map(error => <div key={error}> {error} </div>)} </FormItem> : ''
         }
         <FormItem >
-
+        {getFieldDecorator('isAdmin', {
+            valuePropName: 'checked',
+            initialValue: true,
+          })(
+            <Checkbox>create admin</Checkbox>
+          )}
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             Sign Up
           </Button>
