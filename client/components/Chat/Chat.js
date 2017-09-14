@@ -20,7 +20,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.store = this.props.appState;
-        this.chatId = this.props.match.params.chat;        
+        // this.chatId = this.props.match.params.chat;        
     }
 
     componentWillMount() {
@@ -57,7 +57,7 @@ class Chat extends Component {
 
             this.props.mutate({
                 variables: {
-                    chatId: this.chatId,
+                    chatId: this.props.match.params.chat,
                     content,
                 }              
             })
@@ -104,7 +104,7 @@ class Chat extends Component {
                         }} >
                         {messages.map(message => <Message key={message.id} user={message.user.username} message={message.content} createdAt={moment(message.createdAt).format("HH:mm")} />
                         )}
-                        <p> chat's ID {this.chatId} </p>
+                        <p> chat's ID {this.props.match.params.chat} </p>
                     </div>
                 </div>
                 <div

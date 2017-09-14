@@ -19,10 +19,10 @@ ${userFragment}
 export const Login = gql`
 mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password){
-    ...userFields
+    token
   }
 }
-${userFragment}
+
 `;
 
 // export const Logout = gql`

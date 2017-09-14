@@ -12,6 +12,7 @@ import Chat from './Chat';
 const UserSchema = new Schema({
   username: String,
   password: String,
+  isAdmin: Boolean,
   chats: [{
     type: Schema.Types.ObjectId,
     ref: 'chat'
@@ -64,10 +65,10 @@ UserSchema.methods = {
   _hashPassword(password) {
     return hashSync(password);
   },
-  authenticateUser(password) {
+  authenticateUser(password) {    
     return compareSync(password, this.password);
   },
-  createToken() {
+  createToken() {    
     return jwt.sign(
       {
         id: this._id

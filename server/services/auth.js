@@ -5,7 +5,7 @@ import User from '../models/User';
 
 export async function requireAuth(user) {
   
-  // console.log(user);
+  console.log(user);
   if (!user || !user.id) {
     throw new Error('Unauthorized!');
   }

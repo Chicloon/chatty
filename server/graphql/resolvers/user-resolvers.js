@@ -7,6 +7,7 @@ import Message from '../../models/Message';
 export default {
   // querries
   user:async (_, args, { user }) => {
+    // console.log('user from resolver', user);
     try {
       const me = await requireAuth(user);
 
@@ -19,14 +20,14 @@ export default {
     return req.user&& User.find({});    
   },
   // mutations
-  signup: async (_, { username, password }) => {
+  signup: async (_, { username, password, isAdmin }) => {
     try {     
       const checkUser = await User.findOne({username});
       
       if(checkUser !== null) {
         throw new Error('username in use');
       }
-      const user = await User.create({ username, password });
+      const user = await User.create({ username, password, isAdmin });
 
       return {
         token: user.createToken(),
@@ -48,7 +49,7 @@ export default {
         throw new Error('Password not match!');
       }
 
-      return {
+      return {        
         token: user.createToken()
       };
     } catch (error) {

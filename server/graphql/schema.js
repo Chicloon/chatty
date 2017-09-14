@@ -43,7 +43,7 @@ export default `
   type Mutation {
     login (username: String!, password: String!): Auth
     #logout: User
-    signup (username: String!, password: String!): Auth 
+    signup (username: String!, password: String!, isAdmin: Boolean): Auth 
     addMessage(chatId: ID!, content: String): Message
     createChat(name: String): Chat
     addUserToChat(userId: ID, chatId: ID, access: Int): Member    
