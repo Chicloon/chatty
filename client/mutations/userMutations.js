@@ -1,9 +1,8 @@
 import { gql } from 'react-apollo';
 
 export const userFragment = gql`
-fragment userFields on User {
-  id
-  username  
+fragment userFields on Auth {
+  token
 }
 `;
 
@@ -26,11 +25,13 @@ mutation Login($username: String!, $password: String!) {
 ${userFragment}
 `;
 
-export const Logout = gql`
-  mutation {
-    logout {
-      ...userFields
-    }
-  }
-${userFragment}  
-`;
+// export const Logout = gql`
+//   mutation {
+//     logout {
+//       ...userFields
+//     }
+//   }
+// ${userFragment}  
+// `;
+
+

@@ -23,6 +23,7 @@ import Group from './components/Group/Group';
 
 import MainLayout from './components/Layouts/MainLayout';
 
+const token = localStorage.getItem('chatty');
 
 const networkInterface = createNetworkInterface({
 	uri: '/graphql', // Ссылка на проксю из webpack.config.dev.js
@@ -32,7 +33,8 @@ const networkInterface = createNetworkInterface({
 });
 
 const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', {
-	reconnect: true
+	reconnect: true,
+	// connectionParams()
 })
 
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
@@ -43,7 +45,7 @@ networkInterface.use([{
 			req.options.headers = {};
 		}
 		try {
-			const token = await localStorage.getItem('chatty');
+			
 			if (token != null) {
 				req.options.headers.authorization = `Bearer ${token}` || null;
 			}

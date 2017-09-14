@@ -9,7 +9,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
 import query from '../../queries/CurrentUser';
-import {Logout} from '../../mutations/userMutations';
+// import {Logout} from '../../mutations/userMutations';
 import {Login} from '../../mutations/userMutations';
 import {Signup} from '../../mutations/userMutations';
 
@@ -23,9 +23,10 @@ class HeaderComponent extends Component {
   }  
 
   onLogoutClick = ()=> {
-    this.props.logoutMutation({
-      refetchQueries: [{ query }],
-    });
+    // this.props.logoutMutation({
+    //   refetchQueries: [{ query }],
+    // });
+    localStorage.removeItem('chatty');
     this.setState({errors: []});
   }
 
@@ -102,7 +103,7 @@ class HeaderComponent extends Component {
 
 export default compose(
   graphql(query),
-  graphql(Logout, {name: 'logoutMutation'}),
+  // graphql(Logout, {name: 'logoutMutation'}),
   graphql(Login, {name: 'loginMutation'}),
   graphql(Signup, {name: 'signupMutation'})
 )(HeaderComponent);
